@@ -1,0 +1,19 @@
+{
+  "name": "hypurrtrade-dashboard",
+  "version": "1.0.0",
+  "description": "HypurrTrade Dashboard - Perpetual trading analytics, liquidation heatmap, and signals",
+  "main": "index.html",
+  "scripts": {
+    "start": "python serve.py",
+    "serve": "npx serve ."
+  },
+  "keywords": [
+    "hyperliquid",
+    "hypurrtrade",
+    "perpetual-trading",
+    "liquidation-heatmap",
+    "crypto-dashboard"
+  ],
+  "author": "Paras",
+  "license": "MIT"
+}

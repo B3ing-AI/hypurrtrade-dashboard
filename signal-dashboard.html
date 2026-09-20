@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="assets/react.min.js"></script>
+<script src="assets/react-dom.min.js"></script>
+<script src="assets/babel.min.js"></script>
+<script src="assets/dc-runtime.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_26.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_27.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_28.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_29.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_30.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_31.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_26.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_27.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_28.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_29.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_30.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_31.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_26.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_27.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_28.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_29.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_30.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_31.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_26.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_27.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_28.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_29.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_30.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_31.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Patrick Hand SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_32.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Patrick Hand SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_33.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Patrick Hand SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_34.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_35.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_36.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/font_37.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_35.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_36.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/font_37.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_35.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_36.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/font_37.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_35.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_36.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/font_37.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+  body { margin:0; background:#060f0d; }
+  @keyframes rise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.2; } }
+  @keyframes catBlink { 0%, 90%, 100% { transform:scaleY(1); } 93%, 96% { transform:scaleY(.08); } }
+  @keyframes catBob { 0%, 100% { transform:translateY(0); } 50% { transform:translateY(-4px); } }
+  @media (max-width:720px) {
+    [data-mq="sig-wrap"] { padding:22px 14px 44px !important; }
+    [data-mq="sig-title"] { font-size:23px !important; }
+    [data-mq="sig-controls"] { flex-wrap:wrap !important; gap:12px !important; }
+    [data-mq="sig-panel"] { width:100%; box-sizing:border-box; padding:12px 14px !important; }
+    [data-mq="sig-find"] { flex:1; min-width:0; }
+    [data-mq="sig-findwrap"] { width:100%; }
+  }
+</style>
+</helmet>
+<div data-screen-label="Signal Dashboard" data-mq="sig-wrap" style="position:relative; min-height:100vh; box-sizing:border-box; padding:clamp(18px,4vw,36px) clamp(12px,3vw,30px) 56px; font-family:'Space Grotesk',system-ui,sans-serif; color:#E9FBF5; background:radial-gradient(1100px 600px at 78% -14%, rgba(151,252,228,.10), transparent 60%), radial-gradient(820px 560px at -8% 110%, rgba(80,210,193,.06), transparent 60%), #060f0d;">
+
+  <div style="position:absolute; inset:0; background-image:linear-gradient(rgba(151,252,228,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(151,252,228,.03) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(circle at 50% 20%, #000, transparent 78%); pointer-events:none;"></div>
+
+  <div style="position:relative; max-width:1320px; margin:0 auto;">
+
+    <!-- header -->
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-bottom:30px;">
+      <div>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <a href="index.html" title="Hypurr home" style="animation:catBob 3s ease-in-out infinite; display:block;"><img src="assets/icon_3.svg" alt="mascot" style="width:44px; height:auto; display:block;"></a>
+          <h1 data-mq="sig-title" style="margin:0; font-size:clamp(22px,4.6vw,30px); font-weight:700; letter-spacing:-.02em; white-space:nowrap;">Signal Dashboard</h1>
+          <span style="font-family:'Patrick Hand SC', cursive; font-size:20px; color:#97FCE4; opacity:.9; transform:rotate(-3deg); text-shadow:0 0 12px rgba(151,252,228,.35); white-space:nowrap;">$1 wen?</span>
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:8px; background:rgba(151,252,228,.08); border:1px solid rgba(151,252,228,.18);">
+            <span style="width:8px; height:8px; border-radius:50%; background:{{ liveDot }}; box-shadow:0 0 9px {{ liveDot }}; animation:blink 1.4s ease-in-out infinite;"></span>
+            <span style="font-size:11px; font-weight:600; letter-spacing:.1em; color:#97FCE4; font-family:'JetBrains Mono';">{{ liveLabel }}</span>
+          </span>
+          <span sc-camel-on-click="{{ pbGo }}" style="cursor:pointer; display:inline-flex; align-items:center; gap:7px; padding:6px 13px; border-radius:9px; border:1px solid rgba(151,252,228,.14); background:rgba(255,255,255,.02); color:#9CB8AF; font-size:12px; font-weight:600; transition:all .25s ease;" style-hover="border:1px solid rgba(151,252,228,.4); color:#97FCE4; background:rgba(151,252,228,.06);">Perps board →</span>
+          <span sc-camel-on-click="{{ hzGo }}" style="cursor:pointer; display:inline-flex; align-items:center; gap:7px; padding:6px 13px; border-radius:9px; border:1px solid rgba(151,252,228,.14); background:rgba(255,255,255,.02); color:#9CB8AF; font-size:12px; font-weight:600; transition:all .25s ease;" style-hover="border:1px solid rgba(151,252,228,.4); color:#97FCE4; background:rgba(151,252,228,.06);">Hedge scanner →</span>
+        </div>
+        <p style="margin:8px 0 0; font-size:14px; color:#7C9A91;">{{ subtitle }}</p>
+      </div>
+
+      <!-- control panel -->
+      <div data-mq="sig-panel" style="padding:16px 18px; border:1px solid rgba(151,252,228,.14); border-radius:16px; background:linear-gradient(180deg, rgba(16,30,26,.9), rgba(10,21,18,.92)); box-shadow:0 24px 50px -38px rgba(0,0,0,.9);">
+        <div data-mq="sig-controls" style="display:flex; align-items:center; gap:24px;">
+          <div style="display:flex; align-items:center; gap:11px;">
+            <span style="font-size:10.5px; font-weight:600; letter-spacing:.14em; color:#7C9A91;">MODE</span>
+            <div style="display:flex; gap:3px; padding:3px; border-radius:9px; background:rgba(0,0,0,.3); border:1px solid rgba(151,252,228,.08);">
+              <span sc-camel-on-click="{{ onPos }}" style="cursor:pointer; font-size:12px; font-weight:600; padding:6px 14px; border-radius:7px; color:{{ gPosColor }}; background:{{ gPosBg }};">Positional</span>
+              <span sc-camel-on-click="{{ onIntra }}" style="cursor:pointer; font-size:12px; font-weight:600; padding:6px 14px; border-radius:7px; color:{{ gIntraColor }}; background:{{ gIntraBg }};">Intraday</span>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:11px;">
+            <span style="font-size:10.5px; font-weight:600; letter-spacing:.14em; color:#7C9A91;">VIEW</span>
+            <div style="display:flex; gap:3px; padding:3px; border-radius:9px; background:rgba(0,0,0,.3); border:1px solid rgba(151,252,228,.08);">
+              <span sc-camel-on-click="{{ onScore }}" style="cursor:pointer; font-size:12px; font-weight:600; padding:6px 14px; border-radius:7px; color:{{ gScoreColor }}; background:{{ gScoreBg }};">Score</span>
+              <span sc-camel-on-click="{{ onUsers }}" style="cursor:pointer; font-size:12px; font-weight:600; padding:6px 14px; border-radius:7px; color:{{ gUsersColor }}; background:{{ gUsersBg }};">Users</span>
+            </div>
+          </div>
+          <div data-mq="sig-findwrap" style="display:flex; align-items:center; gap:11px;">
+            <span style="font-size:10.5px; font-weight:600; letter-spacing:.14em; color:#7C9A91;">FIND</span>
+            <input data-mq="sig-find" value="{{ qVal }}" sc-camel-on-change="{{ onSearch }}" placeholder="BTC, HYPE, PUMP…" style="box-sizing:border-box; width:168px; padding:8px 12px; border-radius:9px; border:1px solid rgba(151,252,228,.14); background:rgba(0,0,0,.3); color:#E9FBF5; font-family:'JetBrains Mono'; font-size:12px; outline:none; transition:all .25s ease;" style-focus="border:1px solid rgba(151,252,228,.45); box-shadow:0 0 14px -4px rgba(151,252,228,.35);">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- grid -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(min(370px, 100%), 1fr)); gap:18px;">
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+        <dc-import name="Signal Card" asset="{{ r }}" view="{{ r.view }}" bias="{{ r.bias }}" on-toggle="{{ onToggle }}" on-nav="{{ onNavCb }}" hint-size="100%,440px"></dc-import>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ noMatch }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:8px; text-align:center; padding:42px 20px; border:1px dashed rgba(151,252,228,.18); border-radius:16px; color:#7C9A91; font-size:14px;">
+        No token matches "{{ qTxt }}" in the top 40.
+        <span sc-camel-on-click="{{ onClearQ }}" style="cursor:pointer; color:#97FCE4; text-decoration:underline; margin-left:6px;">Clear search</span>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:26px; font-size:11.5px; color:#4f6a62; font-family:'JetBrains Mono';">{{ footer }}</div>
+
+  </div>
+</div>
+
+
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{}">
+class Component extends DCLogic {
+  state = { rows: null, dataLive: false, globalView: 'score', globalBias: 'positional', clock: '' };
+
+  PALETTE = ['#F7931A', '#97FCE4', '#627EEA', '#14F195', '#F0B90B', '#23292F', '#E6007A', '#FF6B7A', '#3FE0A0', '#C2A633', '#8247E5', '#2775CA'];
+
+  mulberry32(seed) {
+    let a = seed >>> 0;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  hash(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+  fmtPrice(n) {
+    if (n < 0.01) return n.toFixed(5);
+    if (n < 1) return n.toFixed(4);
+    if (n < 1000) return n.toFixed(2);
+    return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  stamp(rnd) {
+    const d = new Date(Date.now() - Math.floor(rnd() * 18) * 3600000);
+    const mo = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const z = (n) => String(n).padStart(2, '0');
+    return z(d.getUTCDate()) + ' ' + mo[d.getUTCMonth()] + ' ' + String(d.getUTCFullYear()).slice(2) + ' ' + z(d.getUTCHours()) + ':' + z(d.getUTCMinutes()) + ' UTC';
+  }
+
+  ICON_OK = 'btc eth sol xrp bnb ada doge trx ton link avax xlm sui hbar shib dot ltc bch uni pepe near apt icp etc aave vet fil algo atom arb op inj sei tia ldo imx grt stx mkr rune ftm gala sand mana axs crv comp snx sushi yfi zec dash xmr eos xtz neo iota zil enj bat omg qtum icx waves kava band ankr storj fet rose one ens ape gmt hype wld jup pyth strk blur tao render pendle ondo ena wif bonk floki not io zk pol matic celo rsr hnt ar egld flow ksm dydx gmx cake twt rpl fxs cfx mina rndr magic hot chz lunc ust btt hifi vtho';
+  iconUrl(sym) {
+    let s = sym.toLowerCase().replace(/^k/, '').replace(/[0-9]/g, '');
+    const map = { xbt: 'btc', weth: 'eth' };
+    if (map[s]) s = map[s];
+    if (this.ICON_OK.split(' ').includes(s)) return 'https://assets.coincap.io/assets/icons/' + s + '@2x.png';
+    // fallback: Hyperliquid's own coin art — covers every listed perp (LIT, FARTCOIN, PUMP, SPX, GRAM, …)
+    return 'https://app.hyperliquid.xyz/coins/' + sym.replace(/^k/, '') + '.svg';
+  }
+  stamp2(ms) {
+    if (!ms) return '—';
+    const d = new Date(ms);
+    const mo = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const z = (n) => String(n).padStart(2, '0');
+    return z(d.getUTCDate()) + ' ' + mo[d.getUTCMonth()] + ' ' + String(d.getUTCFullYear()).slice(2) + ' ' + z(d.getUTCHours()) + ':' + z(d.getUTCMinutes()) + ' UTC';
+  }
+  stampStr(s) {
+    if (!s) return '—';
+    const m = s.match(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/);
+    if (!m) return s;
+    const mo = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return m[3] + ' ' + mo[+m[2] - 1] + ' ' + m[1].slice(2) + ' ' + m[4] + ':' + m[5] + ' UTC';
+  }
+  wavgEntries(trades) {
+    const byCoin = {};
+    (trades || []).forEach((t) => {
+      const c = byCoin[t.coin] = byCoin[t.coin] || { ln: 0, ld: 0, sn: 0, sd: 0 };
+      const v = Math.abs(t.size);
+      if (t.side === 'Long') { c.ln += v * t.entryPrice; c.ld += v; } else { c.sn += v * t.entryPrice; c.sd += v; }
+    });
+    const out = {};
+    for (const c in byCoin) { const b = byCoin[c]; out[c] = { long: b.ld ? b.ln / b.ld : 0, short: b.sd ? b.sn / b.sd : 0 }; }
+    return out;
+  }
+  sideFromSignal(sig, entries) {
+    const L = sig.long || {}, S = sig.short || {};
+    const uL = L.users || 0, uS = S.users || 0;
+    const sL = Math.max(0, L.score || 0), sS = Math.max(0, S.score || 0);
+    return {
+      users: uL + uS, usersLong: uL, usersShort: uS,
+      scoreLong: sL, scoreShort: sS,
+      bearScore: (sL + sS) ? Math.round(sS / (sL + sS) * 100) : 50,
+      bearUsers: (uL + uS) ? Math.round(uS / (uL + uS) * 100) : 50,
+      entryLong: entries && entries.long ? this.fmtPrice(entries.long) : '—',
+      entryShort: entries && entries.short ? this.fmtPrice(entries.short) : '—',
+      recentLong: this.stampStr(L.most_recent_entry), recentShort: this.stampStr(S.most_recent_entry),
+    };
+  }
+  buildRows(posSignals, daySignals, posEntries, dayEntries, markMap, changeMap) {
+    const dayBy = {};
+    (daySignals || []).forEach((s) => { dayBy[s.coin] = s; });
+    const empty = { users: 0, usersLong: 0, usersShort: 0, scoreLong: 0, scoreShort: 0, bearScore: 50, bearUsers: 50, entryLong: '—', entryShort: '—', recentLong: '—', recentShort: '—' };
+    return (posSignals || []).map((sig) => {
+      const sym = sig.coin;
+      const mark = markMap[sym] || 0;
+      const pos = this.sideFromSignal(sig, posEntries[sym]);
+      const daySig = dayBy[sym];
+      const intra = daySig ? this.sideFromSignal(daySig, dayEntries[sym]) : empty;
+      return {
+        sym, rank: sig.rank || 999, price: mark, priceStr: mark ? this.fmtPrice(mark) : '—', change: changeMap[sym] || 0,
+        alias: sym === 'SPX' ? 'SPX6900 · not the S&P index' : (sym[0] === 'k' ? '1000× ' + sym.slice(1) : ''),
+        color: this.PALETTE[this.hash(sym) % this.PALETTE.length], icon: this.iconUrl(sym),
+        score: pos.scoreLong + pos.scoreShort, pos, intra,
+      };
+    });
+  }
+
+  fallbackRows() {
+    const FB = [
+      { rank: 1, coin: 'BTC', long: { users: 11, score: 320, most_recent_entry: '' }, short: { users: 20, score: 610, most_recent_entry: '' } },
+      { rank: 2, coin: 'ETH', long: { users: 8, score: 150, most_recent_entry: '' }, short: { users: 12, score: 380, most_recent_entry: '' } },
+      { rank: 3, coin: 'SOL', long: { users: 6, score: 210, most_recent_entry: '' }, short: { users: 5, score: 90, most_recent_entry: '' } },
+    ];
+    return this.applyToggles(this.buildRows(FB, FB, {}, {}, {}, {}));
+  }
+
+  applyToggles(rows) {
+    const prev = {}; (this.state.rows || []).forEach((r) => { prev[r.sym] = r; });
+    rows.forEach((r) => {
+      r.view = (prev[r.sym] && prev[r.sym].view) || this.state.globalView;
+      r.bias = (prev[r.sym] && prev[r.sym].bias) || this.state.globalBias;
+    });
+    return rows;
+  }
+
+  async fetchData() {
+    const markMap = {}, changeMap = {};
+    try {
+      const res = await fetch('https://api.hyperliquid.xyz/info', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'metaAndAssetCtxs' }),
+      });
+      const [meta, ctxs] = await res.json();
+      meta.universe.forEach((u, i) => {
+        const c = ctxs[i];
+        if (c) { const mk = parseFloat(c.markPx), pv = parseFloat(c.prevDayPx); markMap[u.name] = mk; changeMap[u.name] = pv > 0 ? ((mk - pv) / pv) * 100 : 0; }
+      });
+    } catch (e) {}
+    try {
+      // freshest price source: live mids straight from Hyperliquid's book
+      const r2 = await fetch('https://api.hyperliquid.xyz/info', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"type":"allMids"}' });
+      const mids = await r2.json();
+      Object.keys(mids || {}).forEach((k) => {
+        const v = parseFloat(mids[k]);
+        if (!(v > 0) || k[0] === '@') return;
+        const mk = markMap[k];
+        // sanity guard: never let a thin-book mid replace the official mark if it drifts >3%
+        if (!(mk > 0) || Math.abs(v - mk) / mk < 0.03) markMap[k] = v;
+      });
+    } catch (e) {}
+    try {
+      const j = (u) => fetch('https://apihyperliquid.github.io/api/' + u).then((r) => r.json()).catch(() => null);
+      const [posSig, daySig, posTrades, dayTrades] = await Promise.all([
+        j('signalOpenScore.json'), j('signalOpenScoreDay.json'), j('openTrades.json'), j('openDayTrades.json'),
+      ]);
+      if (!posSig || !posSig.signals) throw new Error('no signals');
+      let rows = this.buildRows(posSig.signals, (daySig && daySig.signals) || [], this.wavgEntries(posTrades), this.wavgEntries(dayTrades), markMap, changeMap);
+      rows.sort((a, b) => b.score - a.score);
+      rows = this.applyToggles(rows.slice(0, 40));
+      this.setState({ rows, dataLive: true });
+    } catch (e) {
+      if (!this.state.rows) this.setState({ rows: this.fallbackRows(), dataLive: false });
+    }
+  }
+
+  componentDidMount() {
+    this.fetchData();
+    this.poll = setInterval(() => this.fetchData(), 15000);
+  }
+  componentWillUnmount() { clearInterval(this.poll); }
+
+  onToggle = (sym, key, val) => {
+    this.setState((s) => ({ rows: (s.rows || []).map((r) => r.sym === sym ? { ...r, [key]: val } : r) }));
+  };
+  setGlobal(key, val) {
+    const sk = key === 'view' ? 'globalView' : 'globalBias';
+    this.setState((s) => ({ [sk]: val, rows: (s.rows || []).map((r) => ({ ...r, [key]: val })) }));
+  }
+
+  renderVals() {
+    const q = (this.state.q || '').trim().toLowerCase();
+    const all = this.state.rows || [];
+    const rows = q ? all.filter((r) => (r.sym || '').toLowerCase().includes(q)) : all;
+    const gv = this.state.globalView, gb = this.state.globalBias;
+    const aBg = (on) => on ? '#97FCE4' : 'transparent';
+    const aC = (on) => on ? '#08130f' : '#7C9A91';
+    return {
+      rows,
+      qVal: this.state.q || '',
+      qTxt: (this.state.q || '').trim(),
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      onClearQ: () => this.setState({ q: '' }),
+      noMatch: !!q && rows.length === 0 && all.length > 0,
+      onToggle: this.onToggle,
+      onNavCb: this.props.onNav || null,
+      pbGo: () => { if (this.props.onBack) this.props.onBack(); else location.href = 'prep-dashboard.html?coin=SUI'; },
+      hzGo: () => { if (this.props.onHedge) this.props.onHedge(); else location.href = 'prep-dashboard.html?view=hedge'; },
+      subtitle: all.length ? (q ? rows.length + ' of ' + all.length + ' assets match — clear FIND to see all.' : 'Top ' + all.length + ' assets · Score = Σ round(monthly ROI × 100) per open position.') : 'Loading live signals…',
+      liveDot: this.state.dataLive ? '#3FE0A0' : '#F7C948',
+      liveLabel: this.state.dataLive ? 'LIVE' : 'SIM',
+      footer: (this.state.dataLive ? 'Live · signalOpenScore feed (positional) + signalOpenScoreDay (intraday) · apihyperliquid.github.io · marks from Hyperliquid' : 'Live feed unavailable — showing sample') + ' · Click a card to flip into its full perps dashboard',
+      onScore: () => this.setGlobal('view', 'score'),
+      onUsers: () => this.setGlobal('view', 'users'),
+      onPos: () => this.setGlobal('bias', 'positional'),
+      onIntra: () => this.setGlobal('bias', 'intraday'),
+      gScoreBg: aBg(gv === 'score'), gScoreColor: aC(gv === 'score'),
+      gUsersBg: aBg(gv === 'users'), gUsersColor: aC(gv === 'users'),
+      gPosBg: aBg(gb === 'positional'), gPosColor: aC(gb === 'positional'),
+      gIntraBg: aBg(gb === 'intraday'), gIntraColor: aC(gb === 'intraday'),
+    };
+  }
+}
+</script>
+
+
+</body></html>
