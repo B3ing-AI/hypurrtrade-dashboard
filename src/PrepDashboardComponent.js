@@ -2054,6 +2054,78 @@ class Component extends DCLogic {
       localStorage.setItem('hlg_paper_hist5', JSON.stringify(hist.slice(0, 400)));
     } catch (e) {}
   }
+  cancelTrade(t) {
+    if (!t) return;
+    const isV5 = t._st === 'V5' || t.v === 5;
+    const sfx = isV5 ? '5' : '';
+    const { w, open, hist } = this.paperLoad(sfx);
+    const idx = open.findIndex((x) => x.coin === t.coin && (x.t0 === t.t0 || (x.vT0 && x.vT0 === t.vT0)));
+    const tradeIdx = idx !== -1 ? idx : open.findIndex((x) => x.coin === t.coin);
+    if (tradeIdx === -1) return;
+    const targetTrade = open[tradeIdx];
+
+    const m = this.T && this.T.price > 0 ? this.T.price : 0;
+    const mk = (targetTrade.coin === this.coin && m > 0)
+      ? m
+      : ((this.mids && this.mids[targetTrade.coin] > 0) ? this.mids[targetTrade.coin] : targetTrade.entry);
+
+    const dir = targetTrade.side === 'LONG' ? 1 : -1;
+    const lev = targetTrade.lev || (isV5 ? 5 : 10);
+    let pnl = targetTrade.margin * lev * ((mk / targetTrade.entry - 1) * dir);
+    if (pnl < -targetTrade.margin) pnl = -targetTrade.margin;
+
+    const cst = this.estCosts(targetTrade, 'manual', Date.now());
+    let pnlNet = pnl - (cst && cst.total ? cst.total : 0);
+    if (pnlNet < -targetTrade.margin) pnlNet = -targetTrade.margin;
+
+    w.bal += targetTrade.margin + pnlNet;
+
+    const riskAbs = targetTrade.risk0 || Math.abs(targetTrade.entry - targetTrade.stop) || 1;
+    const r = +(((mk - targetTrade.entry) * dir) / riskAbs).toFixed(2);
+
+    hist.unshift({
+      coin: targetTrade.coin,
+      side: targetTrade.side,
+      entry: targetTrade.entry,
+      exit: mk,
+      outcome: 'manual',
+      margin: targetTrade.margin,
+      pnl: +pnl.toFixed(2),
+      pnlNet: +pnlNet.toFixed(2),
+      fees: +(cst && cst.fees ? cst.fees : 0).toFixed(2),
+      slip: +(cst && cst.slip ? cst.slip : 0).toFixed(2),
+      fund: +(cst && cst.fund ? cst.fund : 0).toFixed(2),
+      fr: targetTrade.fr || 0,
+      r,
+      vT0: targetTrade.vT0,
+      target: targetTrade.target,
+      stop: targetTrade.stop,
+      lev,
+      ot: targetTrade.t0,
+      src: targetTrade.src || 'manual',
+      conv: targetTrade.conv,
+      v: isV5 ? 5 : 4,
+      t: Date.now(),
+    });
+
+    if (!isV5 && typeof this.memAdd === 'function') {
+      this.memAdd(targetTrade, 'manual', pnlNet);
+    }
+
+    open.splice(tradeIdx, 1);
+
+    if (isV5) {
+      this.paperSave5(w, open, hist);
+    } else {
+      try {
+        localStorage.setItem('hlg_paper_wallet', JSON.stringify({ bal: +w.bal.toFixed(2) }));
+        localStorage.setItem('hlg_paper_open', JSON.stringify(open));
+        localStorage.setItem('hlg_paper_hist', JSON.stringify(hist.slice(0, 400)));
+      } catch (e) {}
+    }
+
+    this.forceUpdate();
+  }
   // V5 entry discipline — every loss counts toward bans (V4's flips didn't, HYPE got churned 4x)
   v5Gate(open, hist, coin, side) {
     const now = Date.now();
@@ -2244,7 +2316,8 @@ class Component extends DCLogic {
         side: t.side, sideColor: t.side === 'LONG' ? G : Rd,
         entryStr: P(t.entry), nowLbl: 'MARK', nowStr: mine ? P(mk) : '…',
         tpStr: P(t.target), slStr: P(t.stop),
-        marginStr: '$' + t.margin.toFixed(0) + ' @' + (t.lev || 10) + 'x',
+        canCancel: true, isHist: false,
+        cancelTrade: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.cancelTrade(t); },
         time: (ago(t.t0) === 'now' ? 'just now' : ago(t.t0) + ' ago') + (t.conv ? ' · ' + t.conv + '%' : ''),
         pnlStr: mine ? (this.state.pnlDisp === 'pct' ? pctRoi(upnl, t.margin) : money(upnl)) : '—', pnlColor: !mine ? '#7C9A91' : upnl >= 0 ? G : Rd,
         pnlPctStr: '',
@@ -2256,14 +2329,15 @@ class Component extends DCLogic {
     const histRows = hist.slice(0, 40).map((h) => ({
       wmDisplay: 'flex', wmText: 'closed', rowOpacity: 0.82, bankHas: false, bankStr: '',
       strat: h._st, stratCol: h._st === 'V5' ? '#0a1614' : '#8FC0F0', stratBg: h._st === 'V5' ? '#97FCE4' : 'rgba(143,192,240,.18)',
-      badge: (h.outcome === 'tp' ? 'TP HIT' : h.outcome === 'tp1' ? 'TP1 · HALF BANKED' : h.outcome === 'rat' ? 'RATCHET WIN' : h.outcome === 'sl' ? 'SL HIT' : h.outcome === 'be' ? 'BE STOP' : h.outcome === 'time' ? 'TIME STOP' : 'REVERSAL') + ' · ' + h.coin,
-      badgeColor: (h.outcome === 'tp' || h.outcome === 'tp1' || h.outcome === 'rat') ? G : h.outcome === 'sl' ? Rd : (h.outcome === 'be' || h.outcome === 'time') ? B : Y,
-      badgeBg: (h.outcome === 'tp' || h.outcome === 'tp1' || h.outcome === 'rat') ? 'rgba(63,224,160,.1)' : h.outcome === 'sl' ? 'rgba(255,107,122,.1)' : (h.outcome === 'be' || h.outcome === 'time') ? 'rgba(143,192,240,.1)' : 'rgba(242,179,61,.1)',
+      badge: (h.outcome === 'tp' ? 'TP HIT' : h.outcome === 'tp1' ? 'TP1 · HALF BANKED' : h.outcome === 'rat' ? 'RATCHET WIN' : h.outcome === 'sl' ? 'SL HIT' : h.outcome === 'be' ? 'BE STOP' : h.outcome === 'time' ? 'TIME STOP' : h.outcome === 'manual' ? 'MANUAL CLOSE' : 'REVERSAL') + ' · ' + h.coin,
+      badgeColor: (h.outcome === 'tp' || h.outcome === 'tp1' || h.outcome === 'rat') ? G : h.outcome === 'sl' ? Rd : (h.outcome === 'be' || h.outcome === 'time' || h.outcome === 'manual') ? B : Y,
+      badgeBg: (h.outcome === 'tp' || h.outcome === 'tp1' || h.outcome === 'rat') ? 'rgba(63,224,160,.1)' : h.outcome === 'sl' ? 'rgba(255,107,122,.1)' : (h.outcome === 'be' || h.outcome === 'time' || h.outcome === 'manual') ? 'rgba(143,192,240,.1)' : 'rgba(242,179,61,.1)',
       goCoin: (e) => { e.stopPropagation(); this.goCoin(h.coin); },
       side: h.side, sideColor: h.side === 'LONG' ? G : Rd,
       entryStr: P(h.entry), nowLbl: 'EXIT', nowStr: P(h.exit),
       tpStr: h.target ? P(h.target) : '—', slStr: h.stop ? P(h.stop) : '—',
-      marginStr: '$' + (h.margin || 0).toFixed(0) + ' @' + (h.lev || 10) + 'x',
+      canCancel: false, isHist: true,
+      resStr: (h.outcome === 'manual' ? 'MANUAL' : (h.r != null ? ((h.r >= 0 ? '+' : '') + h.r.toFixed(1) + 'R') : (h.outcome || 'CLOSED').toUpperCase())),
       time: (ago(h.t) === 'now' ? 'just now' : ago(h.t) + ' ago') + (h.conv ? ' · ' + h.conv + '%' : ''),
       pnlStr: this.state.pnlDisp === 'pct' ? pctRoi(pv(h), h.margin) : money(pv(h)), pnlColor: pv(h) >= 0 ? G : Rd,
       pnlPctStr: ((h.r || 0) >= 0 ? '+' : '') + (h.r || 0).toFixed(1) + 'R',
@@ -2652,8 +2726,8 @@ class Component extends DCLogic {
       pmSide: md.side, pmSideColor: dir > 0 ? G : Rd, pmSideOn: dir > 0 ? '#0a1614' : '#fff',
       pmCoin: md.coin + '-PERP',
       pmHlUrl: 'https://app.hyperliquid.xyz/trade/' + md.coin,
-      pmStatus: isOpen ? 'OPEN' : md.outcome === 'tp' ? 'TP HIT' : md.outcome === 'tp1' ? 'TP1 — HALF BANKED' : md.outcome === 'rat' ? 'RATCHET STOP · PROFIT' : md.outcome === 'sl' ? 'SL HIT' : md.outcome === 'be' ? 'BREAKEVEN STOP' : md.outcome === 'time' ? 'TIME STOP' : 'REVERSAL CLOSE',
-      pmStatusColor: isOpen ? B : (md.outcome === 'tp' || md.outcome === 'tp1' || md.outcome === 'rat') ? G : md.outcome === 'sl' ? Rd : (md.outcome === 'be' || md.outcome === 'time') ? B : Y,
+      pmStatus: isOpen ? 'OPEN' : md.outcome === 'tp' ? 'TP HIT' : md.outcome === 'tp1' ? 'TP1 — HALF BANKED' : md.outcome === 'rat' ? 'RATCHET STOP · PROFIT' : md.outcome === 'sl' ? 'SL HIT' : md.outcome === 'be' ? 'BREAKEVEN STOP' : md.outcome === 'time' ? 'TIME STOP' : md.outcome === 'manual' ? 'MANUALLY CLOSED' : 'REVERSAL CLOSE',
+      pmStatusColor: isOpen ? B : (md.outcome === 'tp' || md.outcome === 'tp1' || md.outcome === 'rat') ? G : md.outcome === 'sl' ? Rd : (md.outcome === 'be' || md.outcome === 'time' || md.outcome === 'manual') ? B : Y,
       pmStatusBg: isOpen ? 'rgba(143,192,240,.12)' : (md.outcome === 'tp' || md.outcome === 'tp1' || md.outcome === 'rat') ? 'rgba(63,224,160,.12)' : md.outcome === 'sl' ? 'rgba(255,107,122,.12)' : 'rgba(242,179,61,.12)',
       pmKindLbl: (isOpen ? 'UNREALISED P&L (UPNL)' : 'REALISED P&L') + (cm ? ' · NET OF COSTS' : ' · GROSS'),
       pmCosts: cm
