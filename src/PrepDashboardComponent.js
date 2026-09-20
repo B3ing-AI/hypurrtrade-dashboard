@@ -4,6 +4,8 @@ window.HYPURR_MODELS = {
     { id: 'gemini-2.5-pro', name: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro (Deep Reasoning)', tag: 'Pro' },
     { id: 'gemini-2.0-flash', name: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Stable Fast)', tag: 'Stable' },
     { id: 'gemini-2.0-flash-lite', name: 'gemini-2.0-flash-lite', label: 'Gemini 2.0 Flash Lite (Lightweight)', tag: 'Lite' },
+    { id: 'gemini-2.0-flash-thinking-exp-01-21', name: 'gemini-2.0-thinking', label: 'Gemini 2.0 Flash Thinking Exp', tag: 'Thinking' },
+    { id: 'gemini-2.0-pro-exp-02-05', name: 'gemini-2.0-pro-exp', label: 'Gemini 2.0 Pro Exp', tag: 'ProExp' },
     { id: 'gemini-1.5-flash', name: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash (Legacy)', tag: '1.5' },
     { id: 'gemini-1.5-pro', name: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro (Legacy Pro)', tag: '1.5' }
   ],
