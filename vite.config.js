@@ -135,6 +135,7 @@ function aiProxyPlugin() {
 export default defineConfig({
   plugins: [react(), aiProxyPlugin()],
   server: {
+    host: '0.0.0.0',
     port: 3000,
   }
 });
