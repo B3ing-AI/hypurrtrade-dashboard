@@ -1038,7 +1038,7 @@
       <sc-if value="{{ trHas }}" hint-placeholder-val="{{ false }}">
         <div data-mq="tr-wrap" style="display:flex; flex-direction:column; gap:7px; margin-top:14px;">
           <sc-for list="{{ trRows }}" as="h" hint-placeholder-count="0">
-            <div sc-camel-on-click="{{ h.show }}" data-mq="tr-row" style="position:relative; display:grid; grid-template-columns:minmax(118px,165px) 52px repeat(4, minmax(60px, 1fr)) minmax(80px, 1fr) minmax(96px,120px); gap:10px; align-items:center; padding:9px 12px; border-radius:12px; background:rgba(255,255,255,.02); border:1px solid rgba(151,252,228,.06); cursor:pointer; overflow:hidden; opacity:{{ h.rowOpacity }}; transition:background .25s ease, border-color .25s ease, transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease, opacity .25s ease;" style-hover="background:rgba(151,252,228,.06); border:1px solid rgba(151,252,228,.28); transform:translateY(-2px) scale(1.004); box-shadow:0 14px 30px -18px rgba(0,0,0,.85), 0 0 18px -6px rgba(151,252,228,.18); opacity:1;">
+            <div sc-camel-on-click="{{ h.show }}" data-mq="tr-row" style="position:relative; display:grid; grid-template-columns:minmax(118px,165px) 52px repeat(4, minmax(60px, 1fr)) minmax(90px, 1fr) minmax(84px, auto); gap:10px; align-items:center; padding:9px 12px; border-radius:12px; background:rgba(255,255,255,.02); border:1px solid rgba(151,252,228,.06); cursor:pointer; overflow:hidden; opacity:{{ h.rowOpacity }}; transition:background .25s ease, border-color .25s ease, transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease, opacity .25s ease;" style-hover="background:rgba(151,252,228,.06); border:1px solid rgba(151,252,228,.28); transform:translateY(-2px) scale(1.004); box-shadow:0 14px 30px -18px rgba(0,0,0,.85), 0 0 18px -6px rgba(151,252,228,.18); opacity:1;">
               <span style="position:absolute; inset:0; display:{{ h.wmDisplay }}; align-items:center; justify-content:center; pointer-events:none; font-family:'JetBrains Mono'; font-weight:800; font-size:24px; letter-spacing:.5em; text-indent:.5em; color:rgba(255,255,255,.045); text-transform:uppercase;">{{ h.wmText }}</span>
               <span style="display:flex; flex-direction:column; gap:3px; align-items:flex-start;">
                 <span style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
@@ -1064,20 +1064,7 @@
                 <span style="font-size:9px; letter-spacing:.12em; color:#5f7a72; font-family:'JetBrains Mono';">STOP</span>
                 <span style="font-family:'JetBrains Mono'; font-size:12.5px; color:#FF6B7A;">{{ h.slStr }}</span>
               </span>
-              <sc-if value="{{ h.canCancel }}" hint-placeholder-val="{{ false }}">
-                <div style="display:flex; align-items:center;">
-                  <button sc-camel-on-click="{{ h.cancelTrade }}" style="cursor:pointer; border:1px solid rgba(255,107,122,.38); background:rgba(255,107,122,.12); color:#FF6B7A; padding:6px 11px; border-radius:7px; font-family:'JetBrains Mono'; font-size:10px; font-weight:700; letter-spacing:.06em; display:inline-flex; align-items:center; gap:5px; transition:all .2s ease; box-shadow:0 0 10px -3px rgba(255,107,122,.25);" style-hover="background:rgba(255,107,122,.26); border-color:#FF6B7A; transform:scale(1.04); box-shadow:0 0 14px -2px rgba(255,107,122,.5);" title="Cancel / Close trade now at mark price">
-                    <span style="font-size:11px; line-height:1;">✕</span> <span>CANCEL</span>
-                  </button>
-                </div>
-              </sc-if>
-              <sc-if value="{{ h.isHist }}" hint-placeholder-val="{{ false }}">
-                <span style="display:flex; flex-direction:column; gap:2px;">
-                  <span style="font-size:9px; letter-spacing:.12em; color:#5f7a72; font-family:'JetBrains Mono';">RESULT</span>
-                  <span style="font-family:'JetBrains Mono'; font-size:11.5px; font-weight:700; color:{{ h.badgeColor }}; letter-spacing:.04em;">{{ h.resStr }}</span>
-                </span>
-              </sc-if>
-              <span style="display:flex; align-items:center; justify-content:flex-end; gap:14px;">
+              <span style="display:flex; align-items:center; justify-content:flex-end; gap:10px;">
                 <sc-if value="{{ h.bankHas }}" hint-placeholder-val="{{ false }}">
                   <span style="font-family:'Patrick Hand SC', cursive; font-size:15px; color:#3FE0A0; transform:rotate(-5deg); text-shadow:0 0 10px rgba(63,224,160,.45); white-space:nowrap;">{{ h.bankStr }}</span>
                 </sc-if>
@@ -1086,6 +1073,21 @@
                   <span style="font-family:'JetBrains Mono'; font-size:10.5px; color:{{ h.pnlColor }};">{{ h.pnlPctStr }}</span>
                 </span>
               </span>
+              <sc-if value="{{ h.canCancel }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; align-items:center; justify-content:flex-end;">
+                  <button sc-camel-on-click="{{ h.cancelTrade }}" style="cursor:pointer; border:1px solid rgba(255,107,122,.38); background:rgba(255,107,122,.12); color:#FF6B7A; padding:6px 11px; border-radius:7px; font-family:'JetBrains Mono'; font-size:10px; font-weight:700; letter-spacing:.06em; display:inline-flex; align-items:center; gap:5px; transition:all .2s ease; box-shadow:0 0 10px -3px rgba(255,107,122,.25);" style-hover="background:rgba(255,107,122,.26); border-color:#FF6B7A; transform:scale(1.04); box-shadow:0 0 14px -2px rgba(255,107,122,.5);" title="Cancel / Close trade now at mark price">
+                    <span style="font-size:11px; line-height:1;">✕</span> <span>CANCEL</span>
+                  </button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ h.isHist }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; align-items:center; justify-content:flex-end;">
+                  <span style="display:flex; flex-direction:column; gap:2px; align-items:flex-end;">
+                    <span style="font-size:9px; letter-spacing:.12em; color:#5f7a72; font-family:'JetBrains Mono';">RESULT</span>
+                    <span style="font-family:'JetBrains Mono'; font-size:11.5px; font-weight:700; color:{{ h.badgeColor }}; letter-spacing:.04em;">{{ h.resStr }}</span>
+                  </span>
+                </div>
+              </sc-if>
             </div>
           </sc-for>
         </div>
