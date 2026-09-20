@@ -119,7 +119,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     {'role': 'user', 'parts': [{'text': full_text}]}
                 ],
                 'generationConfig': {
-                    'maxOutputTokens': 400
+                    'maxOutputTokens': 1200
                 }
             }
             headers = {'Content-Type': 'application/json'}
@@ -128,7 +128,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             url = 'https://api.openai.com/v1/chat/completions'
             payload = {
                 'model': model,
-                'max_tokens': 400,
+                'max_tokens': 600,
                 'messages': [
                     {'role': 'system', 'content': system},
                     {'role': 'user', 'content': prompt}
@@ -143,7 +143,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             url = 'https://api.anthropic.com/v1/messages'
             payload = {
                 'model': model,
-                'max_tokens': 400,
+                'max_tokens': 600,
                 'system': system,
                 'messages': [{'role': 'user', 'content': prompt}]
             }
@@ -157,7 +157,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             url = 'https://openrouter.ai/api/v1/chat/completions'
             payload = {
                 'model': model,
-                'max_tokens': 400,
+                'max_tokens': 600,
                 'messages': [
                     {'role': 'system', 'content': system},
                     {'role': 'user', 'content': prompt}
@@ -176,13 +176,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         with urllib.request.urlopen(req, timeout=25) as resp:
             data = json.loads(resp.read().decode('utf-8'))
             if provider == 'gemini':
-                parts = data.get('candidates', [{}])[0].get('content', {}).get('parts', [])
-                text = parts[0].get('text', '') if parts else ''
+                candidates = data.get('candidates', [{}])
+                if candidates:
+                    parts = candidates[0].get('content', {}).get('parts', [])
+                    # Filter out thinking process parts in Gemini 2.5
+                    text_parts = [p.get('text', '') for p in parts if not p.get('thought', False) and 'text' in p]
+                    if text_parts:
+                        text = ''.join(text_parts)
+                    elif parts and 'text' in parts[-1]:
+                        text = parts[-1]['text']
+                    else:
+                        text = ''
+                else:
+                    text = ''
             elif provider in ('openai', 'openrouter'):
                 text = data.get('choices', [{}])[0].get('message', {}).get('content', '')
             elif provider == 'anthropic':
                 content = data.get('content', [])
                 text = content[0].get('text', '') if content else ''
+            print(f"AI response received ({len(text)} chars): {text[:100]}...")
             return {'text': text}
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))

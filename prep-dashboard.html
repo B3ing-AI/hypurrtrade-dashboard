@@ -2559,9 +2559,25 @@ class Component extends DCLogic {
       const text = await this.aiCall(
         'You are a crypto liquidation heat-map analyst (Coinglass-style). Given liquidation cluster data, judge which side price is more likely to be pulled toward (liquidity-magnet logic: dense short-liq pockets above attract upward sweeps; dense long-liq pockets below attract downward sweeps; heavy one-sided recent cascades may be exhausted). Reply STRICT JSON only: {"bias":<number -1..1, positive=upside>,"target":<the price level (number) it is most likely pulled toward, from the given pockets>,"note":"<short plain sentence, max 60 chars>"}',
         JSON.stringify(sum));
-      const mt = String(text).match(/\{[\s\S]*\}/);
-      if (!mt) throw new Error('no JSON in reply: ' + String(text).slice(0, 80));
-      const j = JSON.parse(mt[0]);
+      let cleaned = String(text || '').replace(/```(?:json)?/gi, '').trim();
+      let mt = cleaned.match(/\{[\s\S]*\}/);
+      let j = null;
+      if (mt) {
+        try { j = JSON.parse(mt[0]); } catch (e) {}
+      }
+      if (!j) {
+        const biasM = cleaned.match(/["']?bias["']?\s*:\s*(-?[\d.]+)/i);
+        const targetM = cleaned.match(/["']?target["']?\s*:\s*([\d.]+)/i);
+        const noteM = cleaned.match(/["']?note["']?\s*:\s*["']([^"']+)["']/i);
+        if (biasM) {
+          j = {
+            bias: parseFloat(biasM[1]),
+            target: targetM ? parseFloat(targetM[1]) : 0,
+            note: noteM ? noteM[1] : ''
+          };
+        }
+      }
+      if (!j) throw new Error('no JSON in reply: ' + cleaned.slice(0, 80));
       const bias = Math.max(-1, Math.min(1, +j.bias || 0));
       // target sanity: must be a price on the side the AI leans; else use the densest pocket there
       let tgt = +j.target || 0;
