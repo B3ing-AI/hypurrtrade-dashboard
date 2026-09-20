@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 240" fill="none">
+  <defs>
+    <linearGradient id="sweaterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#182B24"/>
+      <stop offset="100%" stop-color="#0C1914"/>
+    </linearGradient>
+    <linearGradient id="furGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#EAF5EF"/>
+    </linearGradient>
+    <linearGradient id="lensGlint" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(151,252,228,0.75)"/>
+      <stop offset="45%" stop-color="rgba(255,255,255,0.45)"/>
+      <stop offset="100%" stop-color="rgba(151,252,228,0.02)"/>
+    </linearGradient>
+    <linearGradient id="mintAcc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#97FCE4"/>
+      <stop offset="100%" stop-color="#3FE0A0"/>
+    </linearGradient>
+    <filter id="chalkSoft" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" result="noise" seed="9"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.1"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes catBreathe {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    @keyframes tailSwish {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(8deg); }
+      70% { transform: rotate(-6deg); }
+      85% { transform: rotate(2deg); }
+    }
+    @keyframes tailTipWag {
+      0%, 100% { transform: rotate(0deg); }
+      30% { transform: rotate(14deg); }
+      65% { transform: rotate(-10deg); }
+    }
+    @keyframes catBlink {
+      0%, 90%, 96%, 100% { transform: scaleY(1); }
+      93%, 95% { transform: scaleY(0.08); }
+    }
+    @keyframes earTwitchL {
+      0%, 82%, 100% { transform: rotate(0deg); }
+      86% { transform: rotate(-7deg); }
+      90% { transform: rotate(3deg); }
+    }
+    @keyframes earTwitchR {
+      0%, 88%, 100% { transform: rotate(0deg); }
+      92% { transform: rotate(7deg); }
+      96% { transform: rotate(-2deg); }
+    }
+    @keyframes gleamSweep {
+      0%, 75%, 100% { opacity: 0; transform: translateX(-20px) skewX(-20deg); }
+      80% { opacity: 0.85; }
+      88% { opacity: 0; transform: translateX(28px) skewX(-20deg); }
+    }
+    @keyframes shadowPulse {
+      0%, 100% { transform: scale(1); opacity: 0.55; }
+      50% { transform: scale(0.96); opacity: 0.42; }
+    }
+    @keyframes particleFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.45; }
+      50% { transform: translate(2px, -6px) scale(1.3); opacity: 0.95; }
+    }
+  </style>
+
+  <!-- Ground shadow -->
+  <ellipse cx="110" cy="223" rx="55" ry="7.5" fill="#050F0C" style="transform-origin:110px 223px; animation:shadowPulse 4s ease-in-out infinite;"/>
+
+  <g filter="url(#chalkSoft)" style="animation:catBreathe 4s ease-in-out infinite;">
+    <!-- Tail -->
+    <g style="transform-origin:62px 180px; animation:tailSwish 3.8s ease-in-out infinite;">
+      <path d="M62 180 C32 176 15 150 25 120 C29 108 40 102 48 108" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" fill="none"/>
+      <!-- Tail stripes -->
+      <path d="M34 154 C39 156 45 156 50 153 M28 136 C34 139 41 139 46 136 M31 122 C36 125 42 125 46 123" stroke="#8FA9A0" stroke-width="3.8" stroke-linecap="round" fill="none"/>
+      <!-- Tail tip accent -->
+      <g style="transform-origin:38px 115px; animation:tailTipWag 3.8s ease-in-out infinite;">
+        <circle cx="46" cy="109" r="5.5" fill="#97FCE4" opacity="0.45"/>
+      </g>
+    </g>
+
+    <!-- Body / Torso in cozy trader sweater -->
+    <path d="M66 205 C58 158 74 125 110 120 C146 125 162 158 154 205 C154 215 66 215 66 205 Z" fill="url(#sweaterGrad)" stroke="#EAF7F0" stroke-width="2.6"/>
+    
+    <!-- Collar & Knit Pattern -->
+    <path d="M78 132 Q110 148 142 132 L136 122 Q110 136 84 122 Z" fill="#101C17" stroke="#97FCE4" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- Sweater zigzag neon mint stitch -->
+    <path d="M93 162 l4 -5 5 5 5 -5 5 5 5 -5 4 5" stroke="#97FCE4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Hyperliquid crystal medallion -->
+    <polygon points="110,146 114,152 110,158 106,152" fill="url(#mintAcc)" stroke="#10241D" stroke-width="1"/>
+    <circle cx="110" cy="152" r="1.2" fill="#FFFFFF"/>
+
+    <!-- Belt / Waist detail -->
+    <path d="M90 178 h40 v11 q0 6 -8 6 h-24 q-8 0 -8 -6 Z" fill="#0D1713" stroke="#DFF0E9" stroke-width="1.8" opacity="0.95"/>
+    <line x1="102" y1="183" x2="118" y2="183" stroke="#97FCE4" stroke-width="1.8" stroke-linecap="round"/>
+
+    <!-- Arm / Front Paws -->
+    <path d="M74 144 C66 156 68 170 82 180 L92 180 C84 170 82 156 86 146 Z" fill="url(#sweaterGrad)" stroke="#EAF7F0" stroke-width="2.4" stroke-linejoin="round"/>
+    <!-- Right arm holding chalk stylus -->
+    <path d="M146 144 C166 140 178 124 181 106" stroke="#EAF7F0" stroke-width="19" stroke-linecap="round"/>
+    <path d="M146 144 C166 140 178 124 181 106" stroke="url(#sweaterGrad)" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="182" cy="100" r="11.5" fill="#FFFFFF" stroke="#10241D" stroke-width="2.4"/>
+    <!-- Paw toe lines -->
+    <path d="M177 92 l1 6 M183 90 l0.6 7" stroke="#10241D" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- Neon chalk stick in paw -->
+    <rect x="170" y="84" width="5" height="14" rx="2" transform="rotate(35 172 91)" fill="#97FCE4" stroke="#10241D" stroke-width="1.2"/>
+
+    <!-- Feet paws -->
+    <ellipse cx="90" cy="213" rx="13.5" ry="8" fill="#FFFFFF" stroke="#10241D" stroke-width="2.2"/>
+    <ellipse cx="130" cy="213" rx="13.5" ry="8" fill="#FFFFFF" stroke="#10241D" stroke-width="2.2"/>
+    <path d="M86 209 l0 5 M93 209 l0 5 M126 209 l0 5 M133 209 l0 5" stroke="#10241D" stroke-width="1.6" stroke-linecap="round"/>
+
+    <!-- Head Rig -->
+    <g class="cat-head">
+      <!-- Left Ear with twitch -->
+      <g style="transform-origin:75px 50px; animation:earTwitchL 6.2s ease-in-out infinite;">
+        <path d="M76 53 L60 16 L98 38 Z" fill="#FFFFFF" stroke="#10241D" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="M76 45 L68 25 L88 38 Z" fill="#F6A8C0"/>
+        <path d="M67 36 Q73 34 77 38 M71 42 Q76 40 81 44" stroke="#EAF5EF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      </g>
+      <!-- Right Ear with twitch -->
+      <g style="transform-origin:145px 50px; animation:earTwitchR 6.2s ease-in-out infinite;">
+        <path d="M144 53 L160 16 L122 38 Z" fill="#FFFFFF" stroke="#10241D" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="M144 45 L152 25 L132 38 Z" fill="#F6A8C0"/>
+        <path d="M153 36 Q147 34 143 38 M149 42 Q144 40 139 44" stroke="#EAF5EF" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      </g>
+
+      <!-- Head Base Shape -->
+      <path d="M64 78 C64 51 84 35 110 35 C136 35 156 51 156 78 C156 103 136 117 110 117 C84 117 64 103 64 78 Z" fill="url(#furGrad)" stroke="#10241D" stroke-width="2.8"/>
+      <!-- Forehead tabby stripes -->
+      <path d="M101 43 C100 38 99 35 97 31 M110 42 C110 37 110 33 110 29 M119 43 C120 38 121 35 123 31" stroke="#A5BCB3" stroke-width="3.8" stroke-linecap="round" fill="none"/>
+
+      <!-- Cheeks blush -->
+      <ellipse cx="76" cy="94" rx="7.5" ry="4.2" fill="#F6A8C0" opacity="0.55"/>
+      <ellipse cx="144" cy="94" rx="7.5" ry="4.2" fill="#F6A8C0" opacity="0.55"/>
+
+      <!-- Glasses Temples -->
+      <path d="M74 80 L61 78 M146 80 L159 78" stroke="#17241F" stroke-width="3.8" stroke-linecap="round"/>
+      <!-- Glasses Rims -->
+      <circle cx="92" cy="81" r="16.5" fill="#0F211A" fill-opacity="0.08" stroke="#17241F" stroke-width="4.8"/>
+      <circle cx="128" cy="81" r="16.5" fill="#0F211A" fill-opacity="0.08" stroke="#17241F" stroke-width="4.8"/>
+      <!-- Subtle inner cyber-mint rim reflection -->
+      <circle cx="92" cy="81" r="14.5" stroke="#97FCE4" stroke-width="1.1" stroke-opacity="0.45" fill="none"/>
+      <circle cx="128" cy="81" r="14.5" stroke="#97FCE4" stroke-width="1.1" stroke-opacity="0.45" fill="none"/>
+      <!-- Glasses Bridge -->
+      <path d="M106 79 Q110 74 114 79" stroke="#17241F" stroke-width="4.2" stroke-linecap="round" fill="none"/>
+
+      <!-- Glasses Gleam Sweep Effect -->
+      <g style="overflow:hidden;">
+        <path d="M84 68 L96 68 L86 94 L74 94 Z" fill="url(#lensGlint)" style="animation:gleamSweep 5.4s ease-in-out infinite;"/>
+        <path d="M120 68 L132 68 L122 94 L110 94 Z" fill="url(#lensGlint)" style="animation:gleamSweep 5.4s ease-in-out infinite;"/>
+      </g>
+
+      <!-- Eyes with Blinking -->
+      <g style="transform-origin:110px 81px; animation:catBlink 4.6s ease-in-out infinite;">
+        <ellipse class="cat-eye" cx="92" cy="82" rx="4.8" ry="5.8" fill="#101F18"/>
+        <ellipse class="cat-eye" cx="128" cy="82" rx="4.8" ry="5.8" fill="#101F18"/>
+        <!-- Primary specular highlight -->
+        <circle cx="94.2" cy="79.5" r="1.9" fill="#FFFFFF"/>
+        <circle cx="130.2" cy="79.5" r="1.9" fill="#FFFFFF"/>
+        <!-- Secondary mint highlight -->
+        <circle cx="90.5" cy="84.5" r="1" fill="#97FCE4"/>
+        <circle cx="126.5" cy="84.5" r="1" fill="#97FCE4"/>
+      </g>
+
+      <!-- Nose -->
+      <path d="M106.5 94 L113.5 94 L110 98.8 Z" fill="#F291B1" stroke="#10241D" stroke-width="1.3" stroke-linejoin="round"/>
+      <!-- Mouth :3 -->
+      <path d="M110 98.8 Q106.8 103.2 102.5 100.8 M110 98.8 Q113.2 103.2 117.5 100.8" stroke="#17241F" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+
+      <!-- Whiskers -->
+      <path d="M66 88 C58 86 51 85 43 85 M67 94 C58 94 52 96 44 98 M68 100 C60 102 54 105 47 109" stroke="#CFE2DB" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+      <path d="M146 87 C154 85 161 84 169 84 M145 93 C154 93 160 95 168 97 M144 99 C152 101 158 104 165 108" stroke="#CFE2DB" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+
+  <!-- Chalk Dust / Math Motes Particles -->
+  <g fill="#EAF7F0">
+    <circle cx="36" cy="86" r="1.7" fill="#97FCE4" style="animation:particleFloat 3.2s ease-in-out infinite;"/>
+    <circle cx="196" cy="140" r="1.4" fill="#3FE0A0" style="animation:particleFloat 4.1s ease-in-out 0.8s infinite;"/>
+    <circle cx="184" cy="62" r="2.0" fill="#97FCE4" style="animation:particleFloat 3.6s ease-in-out 1.5s infinite;"/>
+    <circle cx="24" cy="150" r="1.3" fill="#EAF7F0" style="animation:particleFloat 2.8s ease-in-out 0.4s infinite;"/>
+    <!-- Tiny plus mark -->
+    <path d="M194 84 l0 5 M191.5 86.5 l5 0" stroke="#97FCE4" stroke-width="1.3" stroke-linecap="round" opacity="0.65" style="animation:particleFloat 4.4s ease-in-out 1.2s infinite;"/>
+  </g>
+</svg>
