@@ -1,6 +1,8 @@
 window.HYPURR_MODELS = {
   gemini: [
-    { id: 'gemini-2.5-flash', name: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash (Recommended)', tag: 'Fast' },
+    { id: 'gemini-3.8-flash', name: 'gemini-3.8-flash', label: 'Gemini 3.8 Flash (Latest & Best)', tag: 'Latest' },
+    { id: 'gemini-3.7-flash', name: 'gemini-3.7-flash', label: 'Gemini 3.7 Flash', tag: '3.7' },
+    { id: 'gemini-2.5-flash', name: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash', tag: 'Fast' },
     { id: 'gemini-2.5-pro', name: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro (Deep Reasoning)', tag: 'Pro' },
     { id: 'gemini-2.0-flash', name: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Stable Fast)', tag: 'Stable' },
     { id: 'gemini-2.0-flash-lite', name: 'gemini-2.0-flash-lite', label: 'Gemini 2.0 Flash Lite (Lightweight)', tag: 'Lite' },
@@ -23,6 +25,7 @@ window.HYPURR_MODELS = {
     { id: 'claude-3-haiku-20240307', name: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku (Legacy)', tag: '3.0' }
   ],
   openrouter: [
+    { id: 'google/gemini-3.8-flash', name: 'google/gemini-3.8-flash', label: 'Gemini 3.8 Flash (via OpenRouter)', tag: 'Gemini' },
     { id: 'google/gemini-2.0-flash-001', name: 'google/gemini-2.0-flash-001', label: 'Gemini 2.0 Flash (Recommended)', tag: 'Gemini' },
     { id: 'anthropic/claude-3.5-haiku', name: 'anthropic/claude-3.5-haiku', label: 'Claude 3.5 Haiku', tag: 'Claude' },
     { id: 'openai/gpt-4o-mini', name: 'openai/gpt-4o-mini', label: 'GPT-4o Mini', tag: 'GPT' },
@@ -325,7 +328,7 @@ class Component extends DCLogic {
   }
 
   defModel(p) {
-    return p === 'openai' ? 'gpt-4o-mini' : p === 'gemini' ? 'gemini-2.5-flash' : p === 'openrouter' ? 'google/gemini-2.0-flash-001' : 'claude-3-5-haiku-20241022';
+    return p === 'openai' ? 'gpt-4o-mini' : p === 'gemini' ? 'gemini-3.8-flash' : p === 'openrouter' ? 'google/gemini-3.8-flash' : 'claude-3-5-haiku-20241022';
   }
 
   kmSel() { return this.state.kmProv || this.aiProv(); }

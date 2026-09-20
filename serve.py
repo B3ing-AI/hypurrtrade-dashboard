@@ -109,7 +109,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         model = (model or '').strip()
         api_key = api_key.strip()
         if provider == 'gemini':
-            model = model or 'gemini-2.5-flash'
+            model = model or 'gemini-3.8-flash'
             encoded_model = urllib.parse.quote(model)
             encoded_key = urllib.parse.quote(api_key)
             url = f'https://generativelanguage.googleapis.com/v1beta/models/{encoded_model}:generateContent?key={encoded_key}'
