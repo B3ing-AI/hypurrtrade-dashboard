@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @keyframes cardIn { from { opacity:0; transform:translateY(14px) scale(.985); } to { opacity:1; transform:none; } }
+  @keyframes shimmer { 0% { transform:translateX(-140%) skewX(-14deg); } 55%, 100% { transform:translateX(340%) skewX(-14deg); } }
+  @keyframes popin { from { opacity:0; transform:scale(.6); } to { opacity:1; transform:scale(1); } }
+  @keyframes spinring { to { transform:rotate(360deg); } }
+  @keyframes ghostPulse { 0%, 100% { opacity:.05; transform:scale(1); } 50% { opacity:.09; transform:scale(1.04); } }
+</style>
+</helmet>
+<div style="position:relative; perspective:1500px; animation:cardIn .55s cubic-bezier(.2,.7,.2,1) both; transition:transform .3s cubic-bezier(.2,.7,.2,1), filter .3s ease;" style-hover="transform:translateY(-7px); filter:drop-shadow(0 36px 46px rgba(0,0,0,.55)) drop-shadow(0 0 28px rgba(151,252,228,.13));">
+  <div onMouseMove="{{ onTilt }}" onMouseLeave="{{ onTiltOut }}" onClick="{{ onFlip }}" style="position:relative; transform-style:preserve-3d; transition:transform .2s ease-out; will-change:transform; cursor:pointer;">
+
+    <!-- ===== FRONT FACE ===== -->
+    <div style="position:relative; overflow:hidden; box-sizing:border-box; padding:20px 22px; border:1px solid rgba(151,252,228,.17); border-radius:22px; color:#E9FBF5; background:linear-gradient(150deg, rgba(151,252,228,.10), rgba(16,30,26,.62) 36%, rgba(8,17,14,.78)); backdrop-filter:blur(22px) saturate(1.45); box-shadow:0 30px 70px -46px rgba(0,0,0,.95), inset 0 1px 0 rgba(233,251,245,.11), inset 0 -1px 0 rgba(0,0,0,.3); font-family:'Space Grotesk',system-ui,sans-serif; backface-visibility:hidden; -webkit-backface-visibility:hidden;">
+
+      <span style="position:absolute; top:0; bottom:0; left:0; width:44%; background:linear-gradient(105deg, transparent, rgba(233,251,245,.05) 45%, rgba(151,252,228,.1) 50%, transparent 62%); animation:shimmer 6.5s cubic-bezier(.4,0,.2,1) infinite; pointer-events:none;"></span>
+
+      <!-- top row -->
+      <div style="position:relative; display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="position:relative; width:40px; height:40px; flex:none;">
+            <div style="position:absolute; inset:0; border-radius:50%; display:grid; place-items:center; font-weight:700; font-size:15px; color:#08130f; background:{{ color }}; box-shadow:0 0 18px -4px {{ color }};">{{ logoLetter }}</div>
+            <sc-if value="{{ hasIcon }}" hint-placeholder-val="{{ false }}">
+              <img src="{{ iconUrl }}" onError="{{ onIconErr }}" alt="" style="position:absolute; inset:0; width:40px; height:40px; border-radius:50%; object-fit:cover;" />
+            </sc-if>
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:9px; flex-wrap:wrap;">
+              <span style="font-size:19px; font-weight:700; letter-spacing:-.01em;">{{ sym }}</span>
+              <span style="font-family:'JetBrains Mono'; font-size:14px; color:#9CB8AF;">${{ priceStr }}</span>
+              <span style="font-family:'JetBrains Mono'; font-size:10px; font-weight:700; padding:2.5px 7px; border-radius:6px; color:{{ changeColor }}; background:{{ changeBg }};">{{ changeStr }}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; margin-top:3px;">
+              <span style="font-size:10.5px; font-weight:600; letter-spacing:.12em; color:{{ biasColor }};">{{ biasLabel }}</span>
+              <span style="font-size:9.5px; color:#4f6a62; font-family:'JetBrains Mono';">{{ aliasName }}</span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:13px; font-weight:600; color:#E9FBF5;">{{ totalUsers }} Users</div>
+          <div style="font-size:11px; color:#7C9A91; font-family:'JetBrains Mono'; margin-top:3px;">Score: {{ neuralScore }}</div>
+        </div>
+      </div>
+
+      <!-- view toggle -->
+      <div style="position:relative; display:flex; justify-content:center; margin-top:14px;">
+        <div style="display:flex; gap:3px; padding:3px; border-radius:9px; background:rgba(0,0,0,.32); border:1px solid rgba(151,252,228,.1); backdrop-filter:blur(6px);">
+          <span onClick="{{ onScore }}" style="cursor:pointer; font-size:11.5px; font-weight:600; padding:5px 14px; border-radius:7px; color:{{ vScoreColor }}; background:{{ vScoreBg }}; transition:background .25s, color .25s;">Score</span>
+          <span onClick="{{ onUsers }}" style="cursor:pointer; font-size:11.5px; font-weight:600; padding:5px 14px; border-radius:7px; color:{{ vUsersColor }}; background:{{ vUsersBg }}; transition:background .25s, color .25s;">Users</span>
+        </div>
+      </div>
+
+      <!-- donut -->
+      <div style="position:relative; display:grid; place-items:center; margin:10px 0 4px; animation:popin .6s cubic-bezier(.2,.7,.2,1) .1s both;">
+        <svg viewBox="0 0 140 140" style="width:150px; height:150px;">
+          <g transform="rotate(-90 70 70)">
+            <circle cx="70" cy="70" r="54" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="13"></circle>
+            <circle cx="70" cy="70" r="54" fill="none" stroke="#FF6B7A" stroke-width="13" stroke-linecap="round" stroke-dasharray="{{ bearDash }}" stroke-dashoffset="0" style="filter:drop-shadow(0 0 7px rgba(255,107,122,.45)); transition:stroke-dasharray .9s cubic-bezier(.4,0,.2,1);"></circle>
+            <circle cx="70" cy="70" r="54" fill="none" stroke="#3FE0A0" stroke-width="13" stroke-linecap="round" stroke-dasharray="{{ bullDash }}" stroke-dashoffset="{{ bullOffset }}" style="filter:drop-shadow(0 0 7px rgba(63,224,160,.45)); transition:stroke-dasharray .9s cubic-bezier(.4,0,.2,1), stroke-dashoffset .9s cubic-bezier(.4,0,.2,1);"></circle>
+          </g>
+        </svg>
+        <div style="position:absolute; text-align:center;">
+          <div style="font-family:'JetBrains Mono'; font-weight:700; font-size:30px; line-height:1; color:{{ donutColor }}; text-shadow:0 0 22px {{ donutGlow }};">{{ pctStr }}</div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:.14em; color:{{ donutColor }}; margin-top:4px;">{{ donutWord }}</div>
+        </div>
+      </div>
+
+      <!-- long/short ratio bar -->
+      <div style="position:relative; display:flex; height:6px; border-radius:4px; overflow:hidden; margin:4px 6px 14px; background:rgba(255,255,255,.05);">
+        <span style="width:{{ lPct }}%; background:linear-gradient(90deg, #2BC48A, #3FE0A0); box-shadow:0 0 10px rgba(63,224,160,.5); transition:width .9s cubic-bezier(.4,0,.2,1);"></span>
+        <span style="width:{{ sPct }}%; background:linear-gradient(90deg, #E8505B, #FF6B7A); transition:width .9s cubic-bezier(.4,0,.2,1);"></span>
+      </div>
+
+      <!-- bias toggle -->
+      <div style="position:relative; display:flex; justify-content:center; margin-bottom:14px;">
+        <div style="display:flex; gap:3px; padding:3px; border-radius:9px; background:rgba(0,0,0,.32); border:1px solid rgba(151,252,228,.1); backdrop-filter:blur(6px);">
+          <span onClick="{{ onPos }}" style="cursor:pointer; font-size:11.5px; font-weight:600; padding:5px 14px; border-radius:7px; color:{{ bPosColor }}; background:{{ bPosBg }}; transition:background .25s, color .25s;">Positional</span>
+          <span onClick="{{ onIntra }}" style="cursor:pointer; font-size:11.5px; font-weight:600; padding:5px 14px; border-radius:7px; color:{{ bIntraColor }}; background:{{ bIntraBg }}; transition:background .25s, color .25s;">Intraday</span>
+        </div>
+      </div>
+
+      <!-- long / short -->
+      <div style="position:relative; display:grid; grid-template-columns:1fr 1fr; gap:10px; padding-top:14px; border-top:1px solid rgba(151,252,228,.09);">
+        <div style="padding:8px 10px; margin:-4px; border-radius:12px; transition:background .25s;" style-hover="background:rgba(63,224,160,.06);">
+          <div style="display:flex; align-items:center; gap:7px; margin-bottom:10px;"><span style="width:8px; height:8px; border-radius:50%; background:#3FE0A0; box-shadow:0 0 8px rgba(63,224,160,.7);"></span><span style="font-size:11px; font-weight:700; letter-spacing:.1em; color:#3FE0A0;">LONG</span></div>
+          <div style="font-size:12.5px; color:#9CB8AF; margin-bottom:5px;">Users: <span style="color:#E9FBF5; font-family:'JetBrains Mono'; font-weight:600;">{{ lUsers }}</span></div>
+          <div style="font-size:12.5px; color:#9CB8AF; margin-bottom:5px;">Score: <span style="color:#E9FBF5; font-family:'JetBrains Mono'; font-weight:600;">{{ lScore }}</span></div>
+          <div style="font-size:11px; color:#7C9A91; margin-bottom:3px; font-family:'JetBrains Mono';">Avg entry: ${{ lEntry }}</div>
+          <div style="font-size:10px; color:#4f6a62; font-family:'JetBrains Mono';">{{ lRecent }}</div>
+        </div>
+        <div style="text-align:right; padding:8px 10px; margin:-4px; border-radius:12px; transition:background .25s;" style-hover="background:rgba(255,107,122,.06);">
+          <div style="display:flex; align-items:center; justify-content:flex-end; gap:7px; margin-bottom:10px;"><span style="font-size:11px; font-weight:700; letter-spacing:.1em; color:#FF6B7A;">SHORT</span><span style="width:8px; height:8px; border-radius:50%; background:#FF6B7A; box-shadow:0 0 8px rgba(255,107,122,.7);"></span></div>
+          <div style="font-size:12.5px; color:#9CB8AF; margin-bottom:5px;">Users: <span style="color:#E9FBF5; font-family:'JetBrains Mono'; font-weight:600;">{{ sUsers }}</span></div>
+          <div style="font-size:12.5px; color:#9CB8AF; margin-bottom:5px;">Score: <span style="color:#E9FBF5; font-family:'JetBrains Mono'; font-weight:600;">{{ sScore }}</span></div>
+          <div style="font-size:11px; color:#7C9A91; margin-bottom:3px; font-family:'JetBrains Mono';">Avg entry: ${{ sEntry }}</div>
+          <div style="font-size:10px; color:#4f6a62; font-family:'JetBrains Mono';">{{ sRecent }}</div>
+        </div>
+      </div>
+
+      <div style="position:relative; display:flex; justify-content:flex-end; margin-top:10px;">
+        <span style="font-size:10px; font-family:'JetBrains Mono'; letter-spacing:.08em; color:#4f6a62;">CLICK TO FLIP → PERPS VIEW</span>
+      </div>
+    </div>
+
+    <!-- ===== BACK FACE (shown mid-flip while navigating) ===== -->
+    <div style="position:absolute; inset:0; transform:rotateY(180deg); backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:22px; overflow:hidden; border:1px solid rgba(151,252,228,.32); color:#E9FBF5; background:radial-gradient(430px 300px at 50% 18%, rgba(151,252,228,.15), transparent 62%), linear-gradient(165deg, rgba(16,30,26,.97), rgba(6,15,13,.99)); box-shadow:0 30px 70px -46px rgba(0,0,0,.95), inset 0 1px 0 rgba(233,251,245,.1); display:grid; place-items:center; font-family:'Space Grotesk',system-ui,sans-serif;">
+      <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-54%); font-size:200px; font-weight:700; letter-spacing:-.04em; color:rgba(151,252,228,.06); animation:ghostPulse 2.2s ease-in-out infinite; pointer-events:none;">{{ logoLetter }}</span>
+      <div style="position:relative; display:flex; flex-direction:column; align-items:center; gap:13px;">
+        <div style="position:relative; width:54px; height:54px;">
+          <div style="position:absolute; inset:0; border-radius:50%; display:grid; place-items:center; font-weight:700; font-size:20px; color:#08130f; background:{{ color }}; box-shadow:0 0 26px -4px {{ color }};">{{ logoLetter }}</div>
+          <sc-if value="{{ hasIcon }}" hint-placeholder-val="{{ false }}">
+            <img src="{{ iconUrl }}" onError="{{ onIconErr }}" alt="" style="position:absolute; inset:0; width:54px; height:54px; border-radius:50%; object-fit:cover;" />
+          </sc-if>
+        </div>
+        <span style="font-size:25px; font-weight:700; letter-spacing:-.01em;">{{ sym }}</span>
+        <span style="font-family:'JetBrains Mono'; font-size:15px; color:#9CB8AF;">${{ priceStr }}</span>
+        <div style="width:38px; height:38px; border-radius:50%; border:3px solid rgba(151,252,228,.15); border-top-color:#97FCE4; animation:spinring .9s linear infinite; margin-top:4px;"></div>
+        <span style="font-size:10px; font-weight:600; font-family:'JetBrains Mono'; letter-spacing:.22em; color:#97FCE4;">ENTERING PERPS VIEW</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:380,&quot;height&quot;:470},&quot;asset&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;object&quot;},&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;score&quot;,&quot;users&quot;],&quot;default&quot;:&quot;score&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;bias&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;positional&quot;,&quot;intraday&quot;],&quot;default&quot;:&quot;positional&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onToggle&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(sym:string,key:string,val:string)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  flipping = false;
+
+  navUrl() {
+    const a = this.props.asset || {};
+    return 'prep-dashboard.html?coin=' + encodeURIComponent(a.sym || 'SUI');
+  }
+
+  componentDidMount() {
+    // if the browser restores this page from bfcache after a flip-navigation, un-flip
+    this.onShow = () => {
+      this.flipping = false;
+      if (this.tiltEl) {
+        this.tiltEl.style.transition = 'transform .2s ease-out';
+        this.tiltEl.style.transform = 'none';
+      }
+    };
+    window.addEventListener('pageshow', this.onShow);
+  }
+  componentWillUnmount() { window.removeEventListener('pageshow', this.onShow); }
+
+  renderVals() {
+    const a = this.props.asset || {};
+    const view = this.props.view || 'score';
+    const bias = this.props.bias || 'positional';
+    const d = (bias === 'intraday' ? a.intra : a.pos) || {};
+    const bearPct = Math.round(view === 'users' ? (d.bearUsers || 0) : (d.bearScore || 0));
+    const bear = bearPct >= 50;
+    const pct = bear ? bearPct : 100 - bearPct;
+    const accent = bear ? '#FF6B7A' : '#3FE0A0';
+
+    const circ = 339.292, gap = 16;
+    const bearLen = Math.max(0.1, (bearPct / 100) * circ - gap);
+    const bullLen = Math.max(0.1, ((100 - bearPct) / 100) * circ - gap);
+
+    const active = (on) => on ? '#97FCE4' : 'transparent';
+    const activeT = (on) => on ? '#08130f' : '#7C9A91';
+    const sym = a.sym || '?';
+    const cb = (key, val) => (e) => { if (e) { e.preventDefault(); e.stopPropagation(); } this.props.onToggle && this.props.onToggle(sym, key, val); };
+    const ch = a.change || 0;
+
+    return {
+      onTilt: (e) => {
+        const el = this.tiltEl = e.currentTarget;
+        if (this.flipping) return;
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = 'rotateY(' + (px * 8).toFixed(2) + 'deg) rotateX(' + (-py * 6).toFixed(2) + 'deg)';
+      },
+      onTiltOut: (e) => {
+        const el = this.tiltEl = e.currentTarget;
+        if (this.flipping) return;
+        el.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      },
+      onFlip: (e) => {
+        const el = this.tiltEl = e.currentTarget;
+        if (this.flipping) return;
+        this.flipping = true;
+        el.style.transition = 'transform .72s cubic-bezier(.5,0,.15,1)';
+        el.style.transform = 'rotateY(180deg)';
+        setTimeout(() => {
+          if (this.props.onNav) { this.props.onNav((this.props.asset || {}).sym || 'SUI'); this.flipping = false; el.style.transition = 'none'; el.style.transform = 'none'; }
+          else location.href = this.navUrl();
+        }, 700);
+      },
+      iconUrl: a.icon || '', hasIcon: !!a.icon,
+      onIconErr: (e) => { if (e && e.target) e.target.style.display = 'none'; },
+      sym, priceStr: a.priceStr || '—', color: a.color || '#97FCE4', logoLetter: sym.charAt(0),
+      aliasName: a.alias || '',
+      changeStr: (ch >= 0 ? '▲ +' : '▼ −') + Math.abs(ch).toFixed(2) + '%',
+      changeColor: ch >= 0 ? '#3FE0A0' : '#FF6B7A',
+      changeBg: ch >= 0 ? 'rgba(63,224,160,.1)' : 'rgba(255,107,122,.1)',
+      neuralScore: (a.score || 0).toLocaleString('en-US'),
+      totalUsers: d.users || 0,
+      biasLabel: (bear ? 'SHORT' : 'LONG') + ' BIAS', biasColor: accent,
+      pctStr: pct + '%', donutWord: bear ? 'BEARISH' : 'BULLISH', donutColor: accent,
+      donutGlow: bear ? 'rgba(255,107,122,.4)' : 'rgba(63,224,160,.4)',
+      bearDash: bearLen.toFixed(2) + ' ' + (circ - bearLen).toFixed(2),
+      bullDash: bullLen.toFixed(2) + ' 9999',
+      bullOffset: +(-(bearLen + gap)).toFixed(2),
+      lPct: 100 - bearPct, sPct: bearPct,
+      lUsers: d.usersLong, lScore: d.scoreLong, lEntry: d.entryLong, lRecent: d.recentLong,
+      sUsers: d.usersShort, sScore: d.scoreShort, sEntry: d.entryShort, sRecent: d.recentShort,
+      vScoreBg: active(view === 'score'), vScoreColor: activeT(view === 'score'),
+      vUsersBg: active(view === 'users'), vUsersColor: activeT(view === 'users'),
+      bPosBg: active(bias === 'positional'), bPosColor: activeT(bias === 'positional'),
+      bIntraBg: active(bias === 'intraday'), bIntraColor: activeT(bias === 'intraday'),
+      onScore: cb('view', 'score'), onUsers: cb('view', 'users'),
+      onPos: cb('bias', 'positional'), onIntra: cb('bias', 'intraday'),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -4,8 +4,6 @@ import webbrowser
 import os
 import sys
 
-PORT = 3000
-
 class Handler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
         # Enable CORS and disable caching for local development
@@ -14,6 +12,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+target = "signal-dashboard.html" if len(sys.argv) > 1 and "signal" in sys.argv[1].lower() else "prep-dashboard.html?coin=ZEC"
 
 # Find available port
 for port in [3000, 3001, 8000, 8080]:
@@ -24,8 +24,9 @@ for port in [3000, 3001, 8000, 8080]:
             print(f"  Running at: http://localhost:{port}/")
             print(f"  Prep Dashboard: http://localhost:{port}/prep-dashboard.html?coin=ZEC")
             print(f"  Signal Dashboard: http://localhost:{port}/signal-dashboard.html")
+            print(f"  Landing Page: http://localhost:{port}/index.html")
             print(f"==================================================")
-            webbrowser.open(f"http://localhost:{port}/prep-dashboard.html?coin=ZEC")
+            webbrowser.open(f"http://localhost:{port}/{target}")
             httpd.serve_forever()
             break
     except OSError:
