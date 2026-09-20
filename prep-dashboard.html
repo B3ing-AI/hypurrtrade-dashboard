@@ -1023,7 +1023,12 @@
 
       <!-- reasoning pane -->
       <div style="padding:24px 26px; display:flex; flex-direction:column; gap:14px;">
-        <span style="font-size:11px; font-weight:600; letter-spacing:.16em; color:#7C9A91;">WHY — LIVE FACTOR BREAKDOWN</span>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:11px; font-weight:600; letter-spacing:.16em; color:#7C9A91;">WHY — LIVE FACTOR BREAKDOWN</span>
+          <button sc-camel-on-click="{{ kmOpen }}" style="cursor:pointer; border:1px solid rgba(151,252,228,.25); background:rgba(151,252,228,.08); color:#97FCE4; padding:4px 10px; border-radius:7px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; display:inline-flex; align-items:center; gap:5px;" title="Configure AI API Key & Model">
+            <span>🤖</span> <span>{{ kmBadgeText }}</span>
+          </button>
+        </div>
         <div style="display:flex; flex-direction:column; gap:9px;">
           <sc-for list="{{ vFactors }}" as="f" hint-placeholder-count="5">
             <div sc-camel-on-click="{{ f.click }}" data-mq="frow" style="display:grid; grid-template-columns:190px 1fr 200px; gap:14px; align-items:center; cursor:{{ f.cur }};">
@@ -2009,35 +2014,120 @@
       </div>
     </sc-if>
 
-    <!-- ===== CLAUDE API KEY (for public deploys) ===== -->
+    <!-- ===== AI API KEY & MODEL SELECTOR MODAL ===== -->
     <sc-if value="{{ kmShow }}" hint-placeholder-val="{{ false }}">
-      <div sc-camel-on-click="{{ kmClose }}" style="position:fixed; inset:0; z-index:90; background:rgba(3,9,7,.72); backdrop-filter:blur(7px); display:flex; align-items:center; justify-content:center; padding:24px;">
-        <div sc-camel-on-click="{{ kmStop }}" style="width:430px; max-width:94vw; border-radius:20px; border:1px solid rgba(151,252,228,.16); background:linear-gradient(180deg, #101E1A, #0A1512); box-shadow:0 40px 90px -30px rgba(0,0,0,.95); padding:22px; font-family:'Space Grotesk',system-ui,sans-serif; color:#E9FBF5; display:flex; flex-direction:column; gap:14px;">
+      <div sc-camel-on-click="{{ kmClose }}" style="position:fixed; inset:0; z-index:90; background:rgba(3,9,7,.75); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:20px;">
+        <div sc-camel-on-click="{{ kmStop }}" style="width:480px; max-width:95vw; max-height:92vh; overflow-y:auto; border-radius:20px; border:1px solid rgba(151,252,228,.18); background:linear-gradient(180deg, #11201C, #091512); box-shadow:0 40px 90px -30px rgba(0,0,0,.95); padding:24px; font-family:'Space Grotesk',system-ui,sans-serif; color:#E9FBF5; display:flex; flex-direction:column; gap:14px;">
+          
           <div style="display:flex; align-items:center; justify-content:space-between;">
-            <span style="font-size:15px; font-weight:700;">AI API key — Liq-map reader</span>
-            <button sc-camel-on-click="{{ kmClose }}" style="cursor:pointer; border:0; background:rgba(255,255,255,.06); color:#9CB8AF; width:26px; height:26px; border-radius:8px; font-size:13px; line-height:1;">✕</button>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:16px; font-weight:700;">AI API Key — Liq-map Reader</span>
+            </div>
+            <button sc-camel-on-click="{{ kmClose }}" style="cursor:pointer; border:0; background:rgba(255,255,255,.07); color:#9CB8AF; width:28px; height:28px; border-radius:8px; font-size:14px; line-height:1; display:grid; place-items:center;">✕</button>
           </div>
-          <div style="display:flex; gap:2px; padding:2px; border-radius:10px; background:rgba(255,255,255,.05); border:1px solid rgba(151,252,228,.12);">
-            <button sc-camel-on-click="{{ kmSetA }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:9.5px; font-weight:600; letter-spacing:.03em; background:{{ kmABg }}; color:{{ kmACol }}; transition:background .2s ease, color .2s ease;">CLAUDE</button>
-            <button sc-camel-on-click="{{ kmSetO }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:9.5px; font-weight:600; letter-spacing:.03em; background:{{ kmOBg }}; color:{{ kmOCol }}; transition:background .2s ease, color .2s ease;">GPT</button>
-            <button sc-camel-on-click="{{ kmSetG }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:9.5px; font-weight:600; letter-spacing:.03em; background:{{ kmGBg }}; color:{{ kmGCol }}; transition:background .2s ease, color .2s ease;">GEMINI</button>
-            <button sc-camel-on-click="{{ kmSetR }}" style="flex:1.3; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:9.5px; font-weight:600; letter-spacing:.03em; background:{{ kmRBg }}; color:{{ kmRCol }}; transition:background .2s ease, color .2s ease;">OPENROUTER</button>
+
+          <!-- Provider Tabs -->
+          <div style="display:flex; gap:3px; padding:3px; border-radius:11px; background:rgba(255,255,255,.05); border:1px solid rgba(151,252,228,.12);">
+            <button sc-camel-on-click="{{ kmSetA }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; letter-spacing:.03em; background:{{ kmABg }}; color:{{ kmACol }}; transition:all .2s ease;">CLAUDE</button>
+            <button sc-camel-on-click="{{ kmSetO }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; letter-spacing:.03em; background:{{ kmOBg }}; color:{{ kmOCol }}; transition:all .2s ease;">GPT</button>
+            <button sc-camel-on-click="{{ kmSetG }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; letter-spacing:.03em; background:{{ kmGBg }}; color:{{ kmGCol }}; transition:all .2s ease;">GEMINI</button>
+            <button sc-camel-on-click="{{ kmSetR }}" style="flex:1.2; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; letter-spacing:.03em; background:{{ kmRBg }}; color:{{ kmRCol }}; transition:all .2s ease;">OPENROUTER</button>
           </div>
-          <p style="margin:0; font-size:12.5px; line-height:1.55; color:#9CB8AF;">Powers the "Liq-map read (AI)" factor when this dashboard runs outside its home workspace. {{ kmDesc }}</p>
-          <input type="password" placeholder="{{ kmPh }}" sc-camel-on-input="{{ kmType }}" style="box-sizing:border-box; width:100%; padding:11px 13px; border-radius:10px; border:1px solid rgba(151,252,228,.2); background:rgba(0,0,0,.35); color:#E9FBF5; font-family:'JetBrains Mono'; font-size:12.5px; outline:none;">
-          <input type="text" placeholder="{{ kmModelPh }}" sc-camel-on-input="{{ kmModelType }}" style="box-sizing:border-box; width:100%; padding:9px 13px; border-radius:10px; border:1px solid rgba(151,252,228,.13); background:rgba(0,0,0,.3); color:#CFE9E1; font-family:'JetBrains Mono'; font-size:11px; outline:none;">
-          <div style="display:flex; gap:9px;">
-            <button sc-camel-on-click="{{ kmSave }}" style="flex:1; cursor:pointer; border:0; padding:11px; border-radius:10px; background:#97FCE4; color:#08130f; font-weight:700; font-size:13px; font-family:'Space Grotesk',system-ui,sans-serif;">Save &amp; test</button>
+
+          <p style="margin:0; font-size:12px; line-height:1.55; color:#9CB8AF;">{{ kmDesc }}</p>
+
+          <!-- API Key Input -->
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <label style="font-size:10px; font-weight:600; letter-spacing:.12em; color:#7C9A91; font-family:'JetBrains Mono';">API KEY</label>
+            <input type="password" value="{{ kmKeyVal }}" placeholder="{{ kmPh }}" sc-camel-on-input="{{ kmType }}" sc-camel-on-change="{{ kmType }}" style="box-sizing:border-box; width:100%; padding:11px 13px; border-radius:10px; border:1px solid rgba(151,252,228,.22); background:rgba(0,0,0,.45); color:#E9FBF5; font-family:'JetBrains Mono'; font-size:12.5px; outline:none;">
+          </div>
+
+          <!-- Model Dropdown & Selector -->
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <label style="font-size:10px; font-weight:600; letter-spacing:.12em; color:#7C9A91; font-family:'JetBrains Mono';">SELECT MODEL</label>
+              <span style="font-size:9.5px; color:#5f7a72; font-family:'JetBrains Mono';">Click dropdown or pills to change</span>
+            </div>
+
+            <!-- Custom Dropdown Trigger -->
+            <div style="position:relative; display:flex; flex-direction:column; gap:4px;">
+              <div sc-camel-on-click="{{ kmToggleDrop }}" style="cursor:pointer; width:100%; box-sizing:border-box; padding:10px 13px; border-radius:10px; border:1px solid rgba(151,252,228,.22); background:#0c1916; display:flex; justify-content:space-between; align-items:center; user-select:none;">
+                <span style="font-family:'JetBrains Mono'; font-size:12px; color:#97FCE4; font-weight:600;">{{ kmCurModelLabel }}</span>
+                <span style="color:#7C9A91; font-size:10px; transition:transform .2s ease;">▼</span>
+              </div>
+
+              <!-- Dropdown List of Models -->
+              <sc-if value="{{ kmDropOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; flex-direction:column; gap:3px; max-height:185px; overflow-y:auto; padding:6px; border-radius:10px; background:#07120f; border:1px solid rgba(151,252,228,.22); box-shadow:0 12px 30px rgba(0,0,0,.85);">
+                  <sc-for list="{{ kmModelPills }}" as="m">
+                    <div sc-camel-on-click="{{ m.pick }}" style="cursor:pointer; display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-radius:7px; background:{{ m.bg }}; color:{{ m.col }}; transition:all .15s ease;">
+                      <span style="font-family:'JetBrains Mono'; font-size:11.5px; font-weight:600;">{{ m.label }}</span>
+                      <span style="font-size:9.5px; opacity:.8; font-family:'JetBrains Mono'; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,.08);">{{ m.tag }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+
+            <!-- Quick-select pills -->
+            <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:2px;">
+              <sc-for list="{{ kmModelPills }}" as="m">
+                <button sc-camel-on-click="{{ m.pick }}" style="cursor:pointer; border:1px solid {{ m.border }}; padding:5px 9px; border-radius:7px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; background:{{ m.bg }}; color:{{ m.col }}; transition:all .15s ease;">{{ m.name }}</button>
+              </sc-for>
+            </div>
+
+            <!-- Custom Model Input Field -->
+            <input type="text" value="{{ kmModelVal }}" placeholder="{{ kmModelPh }}" sc-camel-on-input="{{ kmModelType }}" sc-camel-on-change="{{ kmModelType }}" title="Custom model identifier" style="box-sizing:border-box; width:100%; padding:9px 12px; border-radius:9px; border:1px solid rgba(151,252,228,.14); background:rgba(0,0,0,.35); color:#97FCE4; font-family:'JetBrains Mono'; font-size:11px; outline:none;">
+          </div>
+
+          <!-- Buttons -->
+          <div style="display:flex; gap:8px; margin-top:3px;">
+            <button sc-camel-on-click="{{ kmSave }}" style="flex:1; cursor:pointer; border:0; padding:11px; border-radius:10px; background:#97FCE4; color:#08130f; font-weight:700; font-size:13px; font-family:'Space Grotesk',system-ui,sans-serif; transition:background .15s ease;">Save &amp; test</button>
             <button sc-camel-on-click="{{ kmTest }}" style="cursor:pointer; border:1px solid rgba(151,252,228,.28); padding:11px 14px; border-radius:10px; background:transparent; color:#97FCE4; font-weight:600; font-size:12.5px; font-family:'Space Grotesk',system-ui,sans-serif;">Test</button>
             <button sc-camel-on-click="{{ kmRemove }}" style="cursor:pointer; border:1px solid rgba(255,107,122,.35); padding:11px 14px; border-radius:10px; background:transparent; color:#FF6B7A; font-weight:600; font-size:12.5px; font-family:'Space Grotesk',system-ui,sans-serif;">Remove</button>
           </div>
-          <span style="font-size:11px; color:{{ kmStatusCol }}; font-family:'JetBrains Mono';">{{ kmStatus }}</span>
+
+          <!-- Status Box -->
+          <div style="display:flex; align-items:center; gap:6px; padding:9px 12px; border-radius:9px; background:rgba(0,0,0,.3); border:1px solid rgba(255,255,255,.05);">
+            <span style="font-size:11.5px; color:{{ kmStatusCol }}; font-family:'JetBrains Mono'; line-height:1.4; word-break:break-word;">{{ kmStatus }}</span>
+          </div>
         </div>
       </div>
     </sc-if>
 
     </x-dc>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;liveData&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;liveTicking&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;countUp&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+window.HYPURR_MODELS = {
+  gemini: [
+    { id: 'gemini-2.5-flash', name: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash (Recommended)', tag: 'Fast' },
+    { id: 'gemini-2.5-pro', name: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro (Deep Reasoning)', tag: 'Pro' },
+    { id: 'gemini-2.0-flash', name: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Stable Fast)', tag: 'Stable' },
+    { id: 'gemini-2.0-flash-lite', name: 'gemini-2.0-flash-lite', label: 'Gemini 2.0 Flash Lite (Lightweight)', tag: 'Lite' },
+    { id: 'gemini-1.5-flash', name: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash (Legacy)', tag: '1.5' },
+    { id: 'gemini-1.5-pro', name: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro (Legacy Pro)', tag: '1.5' }
+  ],
+  openai: [
+    { id: 'gpt-4o-mini', name: 'gpt-4o-mini', label: 'GPT-4o Mini (Recommended)', tag: 'Fast' },
+    { id: 'gpt-4o', name: 'gpt-4o', label: 'GPT-4o (Flagship Omni)', tag: 'Omni' },
+    { id: 'gpt-4.1-mini', name: 'gpt-4.1-mini', label: 'GPT-4.1 Mini', tag: '4.1' },
+    { id: 'gpt-4.1', name: 'gpt-4.1', label: 'GPT-4.1 (Flagship)', tag: '4.1' },
+    { id: 'o3-mini', name: 'o3-mini', label: 'o3-mini (Reasoning)', tag: 'o3' }
+  ],
+  anthropic: [
+    { id: 'claude-3-5-haiku-20241022', name: 'claude-3-5-haiku-20241022', label: 'Claude 3.5 Haiku (Recommended)', tag: 'Fast' },
+    { id: 'claude-3-7-sonnet-20250219', name: 'claude-3-7-sonnet-20250219', label: 'Claude 3.7 Sonnet (Advanced)', tag: '3.7' },
+    { id: 'claude-3-5-sonnet-20241022', name: 'claude-3-5-sonnet-20241022', label: 'Claude 3.5 Sonnet', tag: '3.5' },
+    { id: 'claude-3-haiku-20240307', name: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku (Legacy)', tag: '3.0' }
+  ],
+  openrouter: [
+    { id: 'google/gemini-2.0-flash-001', name: 'google/gemini-2.0-flash-001', label: 'Gemini 2.0 Flash (Recommended)', tag: 'Gemini' },
+    { id: 'anthropic/claude-3.5-haiku', name: 'anthropic/claude-3.5-haiku', label: 'Claude 3.5 Haiku', tag: 'Claude' },
+    { id: 'openai/gpt-4o-mini', name: 'openai/gpt-4o-mini', label: 'GPT-4o Mini', tag: 'GPT' },
+    { id: 'meta-llama/llama-3.3-70b-instruct', name: 'meta-llama/llama-3.3-70b-instruct', label: 'Llama 3.3 70B Instruct', tag: 'Llama' },
+    { id: 'deepseek/deepseek-chat', name: 'deepseek/deepseek-chat', label: 'DeepSeek Chat (V3)', tag: 'DeepSeek' }
+  ]
+};
+
 class Component extends DCLogic {
   T = { price: 3.4218, change: 5.84, funding: 0.0121, oi: 284.6, vol: 1.24, fng: 72 };
   coin = (new URLSearchParams(location.search).get('coin') || 'SUI').toUpperCase();
@@ -2304,54 +2394,103 @@ class Component extends DCLogic {
   // Works two ways: the built-in helper in the home workspace, or a user-supplied
   // Anthropic API key (stored ONLY in this browser) when deployed publicly.
   hasHostAI() { return !!(window.claude && typeof window.claude.complete === 'function'); }
-  apiKey() { try { return (localStorage.getItem('hlg_ai_key') || localStorage.getItem('hlg_anthropic_key') || '').trim(); } catch (e) { return ''; } }
-  aiProv() { try { return localStorage.getItem('hlg_ai_provider') || 'anthropic'; } catch (e) { return 'anthropic'; } }
-  aiModel() { try { return (localStorage.getItem('hlg_ai_model') || '').trim() || this.defModel(this.aiProv()); } catch (e) { return this.defModel(this.aiProv()); } }
-  defModel(p) { return p === 'openai' ? 'gpt-4o-mini' : p === 'gemini' ? 'gemini-2.0-flash' : p === 'openrouter' ? 'openai/gpt-4o-mini' : 'claude-haiku-4-5'; }
+
+  keyFor(p) {
+    try {
+      return (localStorage.getItem('hlg_ai_key_' + p) || (localStorage.getItem('hlg_ai_provider') === p ? localStorage.getItem('hlg_ai_key') : '') || (p === 'anthropic' ? localStorage.getItem('hlg_anthropic_key') : '') || '').trim();
+    } catch (e) { return ''; }
+  }
+
+  modelFor(p) {
+    try {
+      return (localStorage.getItem('hlg_ai_model_' + p) || (localStorage.getItem('hlg_ai_provider') === p ? localStorage.getItem('hlg_ai_model') : '') || this.defModel(p)).trim();
+    } catch (e) { return this.defModel(p); }
+  }
+
+  apiKey() {
+    const p = this.kmSel();
+    if (this.keyTmp !== undefined) return this.keyTmp.trim();
+    return this.keyFor(p) || (localStorage.getItem('hlg_ai_key') || '').trim();
+  }
+
+  aiProv() { try { return localStorage.getItem('hlg_ai_provider') || 'gemini'; } catch (e) { return 'gemini'; } }
+
+  aiModel() {
+    const p = this.kmSel();
+    if (this.modelTmp !== undefined) return (this.modelTmp || '').trim() || this.defModel(p);
+    return this.modelFor(p) || this.defModel(p);
+  }
+
+  defModel(p) {
+    return p === 'openai' ? 'gpt-4o-mini' : p === 'gemini' ? 'gemini-2.5-flash' : p === 'openrouter' ? 'google/gemini-2.0-flash-001' : 'claude-3-5-haiku-20241022';
+  }
+
   kmSel() { return this.state.kmProv || this.aiProv(); }
-  // Preferred path: same-origin server proxy (no browser CORS) — shipped at /api/public/ai-proxy on the
-  // live deploy. Falls back to a direct browser call anywhere the proxy route isn't present (local preview).
+
+  setKmProv(p) {
+    this.keyTmp = undefined;
+    this.modelTmp = undefined;
+    this.kmDropOpen = false;
+    this.kmTesting = null;
+    this.setState({ kmProv: p });
+  }
+
   async aiCall(system, userMsg) {
     if (this.hasHostAI()) {
       return window.claude.complete({ system, messages: [{ role: 'user', content: userMsg }], max_tokens: 400 });
     }
     const key = this.apiKey();
     if (!key) throw new Error('nokey');
-    const provider = this.aiProv(), model = this.aiModel();
+    const provider = this.kmSel(), model = this.aiModel();
     let res = null;
     try {
       res = await fetch(location.origin + '/api/public/ai-proxy', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ provider, apiKey: key, model, system, prompt: userMsg }),
       });
-    } catch (e) { res = null; } // couldn't reach proxy (offline / not deployed) → fall through to direct
+    } catch (e) { res = null; }
     if (res) {
       let j = null;
-      if (res.status !== 404) { try { j = await res.json(); } catch (e) {} }
-      if (j && typeof j.text === 'string') return j.text;          // proxy answered
-      if (j && j.error) throw new Error('http ' + (j.status || res.status) + ' · ' + j.error); // real provider error — surface it
-      // anything else (404, SPA HTML fallback, empty body): treat the proxy as absent
+      try { j = await res.json(); } catch (e) {}
+      if (j && typeof j.text === 'string') return j.text;
+      if (j && j.error) throw new Error(j.error);
     }
     return this.aiCallDirect(provider, model, key, system, userMsg);
   }
 
-  // Direct browser call — used only when the proxy route isn't reachable.
   async aiCallDirect(prov, model, key, system, userMsg) {
     if (prov === 'openai' || prov === 'openrouter') {
       const url = prov === 'openrouter' ? 'https://openrouter.ai/api/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions';
       const headers = { 'content-type': 'application/json', authorization: 'Bearer ' + key };
       if (prov === 'openrouter') { headers['HTTP-Referer'] = location.origin; headers['X-Title'] = 'HypurrTrade'; }
       const r = await fetch(url, { method: 'POST', headers, body: JSON.stringify({ model: model || this.defModel(prov), max_tokens: 200, messages: [{ role: 'system', content: system }, { role: 'user', content: userMsg }] }) });
-      if (!r.ok) throw new Error('http ' + r.status);
+      if (!r.ok) {
+        let em = 'http ' + r.status;
+        try { const ej = await r.json(); if (ej.error && ej.error.message) em = ej.error.message; } catch (e) {}
+        throw new Error(em);
+      }
       const j = await r.json();
       return (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || '';
     }
     if (prov === 'gemini') {
+      const fullPrompt = (system ? (system + '\n\n' + userMsg) : userMsg).trim();
       const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + (model || this.defModel('gemini')) + ':generateContent?key=' + encodeURIComponent(key), {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: 'user', parts: [{ text: userMsg }] }], generationConfig: { maxOutputTokens: 200 } }),
+        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: fullPrompt }] }], generationConfig: { maxOutputTokens: 200 } }),
       });
-      if (!r.ok) throw new Error('http ' + r.status);
+      if (!r.ok) {
+        let em = 'http ' + r.status;
+        try {
+          const ej = await r.json();
+          if (ej.error) {
+            if (ej.error.message) em = ej.error.message;
+            if (ej.error.details && ej.error.details[0] && ej.error.details[0].reason) {
+              if (ej.error.details[0].reason === 'API_KEY_INVALID') em = 'API key not valid. Please pass a valid API key from aistudio.google.com';
+            }
+          }
+        } catch (e) {}
+        throw new Error(em);
+      }
       const j = await r.json();
       return (j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts && j.candidates[0].content.parts[0].text) || '';
     }
@@ -2360,15 +2499,19 @@ class Component extends DCLogic {
       headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({ model: model || this.defModel('anthropic'), max_tokens: 200, system, messages: [{ role: 'user', content: userMsg }] }),
     });
-    if (!r.ok) throw new Error('http ' + r.status);
+    if (!r.ok) {
+      let em = 'http ' + r.status;
+      try { const ej = await r.json(); if (ej.error && ej.error.message) em = ej.error.message; } catch (e) {}
+      throw new Error(em);
+    }
     const j = await r.json();
     return (j.content && j.content[0] && j.content[0].text) || '';
   }
 
-  // one-shot connection test with plain-language ✓ / ✗ feedback in the modal
   async kmRunTest() {
     if (this.hasHostAI()) { this.kmTesting = 'ok'; this.forceUpdate(); return; }
-    if (!this.apiKey()) { this.kmTesting = 'No key entered yet.'; this.forceUpdate(); return; }
+    const key = this.apiKey();
+    if (!key) { this.kmTesting = 'No key entered yet.'; this.forceUpdate(); return; }
     this.kmTesting = 'testing'; this.forceUpdate();
     try {
       const t = await this.aiCall('Reply with exactly: OK', 'Connection test — reply OK.');
@@ -2376,7 +2519,19 @@ class Component extends DCLogic {
       this.aiErr = null; this.ai = null; this.aiLiqRead();
     } catch (e) {
       const m = ((e && e.message) || 'failed').toString();
-      this.kmTesting = /401|403/.test(m) ? 'Key rejected (' + (m.match(/40\d/) || ['auth'])[0] + ') — check the key' : /429/.test(m) ? 'Rate limited (429) — try again shortly' : /404/.test(m) ? 'Model not found (404) — check the model name' : m === 'nokey' ? 'No key entered yet.' : 'Failed — ' + m.slice(0, 90);
+      if (/API_KEY_INVALID|API key not valid/i.test(m)) {
+        this.kmTesting = 'API key not valid — check your key at ' + (this.kmSel() === 'gemini' ? 'aistudio.google.com' : 'provider console');
+      } else if (/401|403|unauthorized|forbidden|rejected/i.test(m)) {
+        this.kmTesting = 'Key rejected — check your API key permissions';
+      } else if (/429|quota|rate/i.test(m)) {
+        this.kmTesting = 'Rate limited or quota exceeded (429) — try again shortly';
+      } else if (/404|not found/i.test(m)) {
+        this.kmTesting = 'Model not found — select another model from the dropdown';
+      } else if (m === 'nokey') {
+        this.kmTesting = 'No key entered yet.';
+      } else {
+        this.kmTesting = 'Failed: ' + m.replace(/^Error:\s*/, '').slice(0, 95);
+      }
     }
     this.forceUpdate();
   }
@@ -4885,24 +5040,130 @@ class Component extends DCLogic {
       ...this.liveVals(),
       ...this.popupVals(),
       kmShow: !!this.state.keyModal,
-      kmClose: () => this.setState({ keyModal: false }),
+      kmOpen: () => this.setState({ keyModal: true }),
+      kmClose: () => { this.setState({ keyModal: false }); this.kmDropOpen = false; },
       kmStop: (e) => e.stopPropagation(),
-      kmType: (e) => { this.keyTmp = e.target.value; },
-      kmModelType: (e) => { this.modelTmp = e.target.value; },
-      kmSave: () => { const v = (this.keyTmp || '').trim(); try { if (v) localStorage.setItem('hlg_ai_key', v); localStorage.setItem('hlg_ai_provider', this.kmSel()); if (this.modelTmp != null) { const mv = this.modelTmp.trim(); if (mv) localStorage.setItem('hlg_ai_model', mv); else localStorage.removeItem('hlg_ai_model'); } } catch (e) {} this.ai = null; this.aiErr = null; this.kmRunTest(); },
-      kmTest: () => this.kmRunTest(),
-      kmRemove: () => { try { localStorage.removeItem('hlg_ai_key'); localStorage.removeItem('hlg_anthropic_key'); localStorage.removeItem('hlg_ai_provider'); localStorage.removeItem('hlg_ai_model'); } catch (e) {} this.ai = null; this.aiErr = 'nokey'; this.kmTesting = null; this.keyTmp = ''; this.modelTmp = undefined; this.forceUpdate(); },
-      kmStatus: this.hasHostAI() ? 'This workspace has built-in Claude — no key needed here.' : this.kmTesting === 'testing' ? 'Testing connection…' : this.kmTesting === 'ok' ? '✓ Connected — the Liq-map reader is live.' : (typeof this.kmTesting === 'string' && this.kmTesting) ? '✗ ' + this.kmTesting : (this.apiKey() ? 'A ' + this.aiProv() + ' key is saved in this browser.' : 'No key saved in this browser yet.'),
-      kmStatusCol: this.kmTesting === 'ok' ? '#3FE0A0' : (typeof this.kmTesting === 'string' && this.kmTesting && this.kmTesting !== 'testing') ? '#FF6B7A' : '#5f7a72',
+      kmType: (e) => { this.keyTmp = (e.target.value || '').trim(); this.forceUpdate(); },
+      kmModelType: (e) => { this.modelTmp = (e.target.value || '').trim(); this.forceUpdate(); },
+      kmKeyVal: this.keyTmp !== undefined ? this.keyTmp : this.keyFor(this.kmSel()),
+      kmModelVal: this.modelTmp !== undefined ? this.modelTmp : this.modelFor(this.kmSel()),
+      kmCurModelLabel: (() => {
+        const p = this.kmSel();
+        const cur = this.modelTmp !== undefined ? this.modelTmp : this.modelFor(p);
+        const list = (window.HYPURR_MODELS && window.HYPURR_MODELS[p]) || [];
+        const match = list.find(m => m.id === cur);
+        return match ? match.label : (cur || this.defModel(p));
+      })(),
+      kmDropOpen: !!this.kmDropOpen,
+      kmToggleDrop: () => { this.kmDropOpen = !this.kmDropOpen; this.forceUpdate(); },
+      kmModelPills: (() => {
+        const p = this.kmSel();
+        const cur = (this.modelTmp !== undefined ? this.modelTmp : this.modelFor(p)) || this.defModel(p);
+        const list = (window.HYPURR_MODELS && window.HYPURR_MODELS[p]) || [];
+        return list.map(m => {
+          const active = m.id === cur;
+          return {
+            id: m.id,
+            name: m.name,
+            label: m.label,
+            tag: m.tag,
+            active,
+            bg: active ? '#97FCE4' : 'rgba(255,255,255,.05)',
+            col: active ? '#08130f' : '#9CB8AF',
+            border: active ? '#97FCE4' : 'rgba(151,252,228,.14)',
+            pick: (e) => {
+              if (e && e.stopPropagation) e.stopPropagation();
+              this.modelTmp = m.id;
+              this.kmDropOpen = false;
+              this.forceUpdate();
+            }
+          };
+        });
+      })(),
+      kmBadgeText: this.apiKey() ? (this.kmSel().toUpperCase() + ': ' + this.aiModel()) : 'CONNECT AI KEY',
+      kmSave: () => {
+        const p = this.kmSel();
+        const rawKey = this.keyTmp !== undefined ? this.keyTmp : this.keyFor(p);
+        const v = (rawKey || '').trim().replace(/^["'\s]+|["'\s]+$/g, '');
+        const rawModel = this.modelTmp !== undefined ? this.modelTmp : this.modelFor(p);
+        const m = (rawModel || '').trim() || this.defModel(p);
+        if (!v) {
+          this.kmTesting = 'Please enter an API key first.';
+          this.forceUpdate();
+          return;
+        }
+        try {
+          localStorage.setItem('hlg_ai_key', v);
+          localStorage.setItem('hlg_ai_key_' + p, v);
+          localStorage.setItem('hlg_ai_provider', p);
+          localStorage.setItem('hlg_ai_model', m);
+          localStorage.setItem('hlg_ai_model_' + p, m);
+          if (p === 'anthropic') localStorage.setItem('hlg_anthropic_key', v);
+        } catch (e) {}
+        this.keyTmp = undefined;
+        this.modelTmp = undefined;
+        this.kmDropOpen = false;
+        this.ai = null;
+        this.aiErr = null;
+        this.kmRunTest();
+      },
+      kmTest: () => {
+        const p = this.kmSel();
+        const rawKey = this.keyTmp !== undefined ? this.keyTmp : this.keyFor(p);
+        const v = (rawKey || '').trim().replace(/^["'\s]+|["'\s]+$/g, '');
+        const rawModel = this.modelTmp !== undefined ? this.modelTmp : this.modelFor(p);
+        const m = (rawModel || '').trim() || this.defModel(p);
+        if (v) {
+          try {
+            localStorage.setItem('hlg_ai_key', v);
+            localStorage.setItem('hlg_ai_key_' + p, v);
+            localStorage.setItem('hlg_ai_provider', p);
+            localStorage.setItem('hlg_ai_model', m);
+            localStorage.setItem('hlg_ai_model_' + p, m);
+          } catch (e) {}
+        }
+        this.kmRunTest();
+      },
+      kmRemove: () => {
+        const p = this.kmSel();
+        try {
+          localStorage.removeItem('hlg_ai_key');
+          localStorage.removeItem('hlg_ai_key_' + p);
+          localStorage.removeItem('hlg_anthropic_key');
+          localStorage.removeItem('hlg_ai_provider');
+          localStorage.removeItem('hlg_ai_model');
+          localStorage.removeItem('hlg_ai_model_' + p);
+        } catch (e) {}
+        this.ai = null;
+        this.aiErr = 'nokey';
+        this.kmTesting = null;
+        this.keyTmp = '';
+        this.modelTmp = undefined;
+        this.kmDropOpen = false;
+        this.forceUpdate();
+      },
+      kmStatus: this.hasHostAI() 
+        ? 'This workspace has built-in Claude — no key needed here.' 
+        : this.kmTesting === 'testing' 
+        ? 'Connecting & testing ' + (this.aiModel()) + '…' 
+        : this.kmTesting === 'ok' 
+        ? '✓ Connected — ' + this.kmSel().toUpperCase() + ' (' + this.aiModel() + ') is ready.' 
+        : (typeof this.kmTesting === 'string' && this.kmTesting) 
+        ? '✗ ' + this.kmTesting 
+        : (this.apiKey() ? 'A ' + this.kmSel().toUpperCase() + ' key is saved in this browser.' : 'No key saved in this browser yet.'),
+      kmStatusCol: this.kmTesting === 'ok' ? '#3FE0A0' : this.kmTesting === 'testing' ? '#F7C948' : (typeof this.kmTesting === 'string' && this.kmTesting) ? '#FF6B7A' : '#7C9A91',
       kmProv: this.kmSel(),
-      kmSetA: () => this.setState({ kmProv: 'anthropic' }), kmSetO: () => this.setState({ kmProv: 'openai' }), kmSetG: () => this.setState({ kmProv: 'gemini' }), kmSetR: () => this.setState({ kmProv: 'openrouter' }),
+      kmSetA: () => this.setKmProv('anthropic'),
+      kmSetO: () => this.setKmProv('openai'),
+      kmSetG: () => this.setKmProv('gemini'),
+      kmSetR: () => this.setKmProv('openrouter'),
       kmABg: this.kmSel() === 'anthropic' ? 'rgba(151,252,228,.14)' : 'transparent', kmACol: this.kmSel() === 'anthropic' ? '#97FCE4' : '#7C9A91',
       kmOBg: this.kmSel() === 'openai' ? 'rgba(151,252,228,.14)' : 'transparent', kmOCol: this.kmSel() === 'openai' ? '#97FCE4' : '#7C9A91',
       kmGBg: this.kmSel() === 'gemini' ? 'rgba(151,252,228,.14)' : 'transparent', kmGCol: this.kmSel() === 'gemini' ? '#97FCE4' : '#7C9A91',
       kmRBg: this.kmSel() === 'openrouter' ? 'rgba(151,252,228,.14)' : 'transparent', kmRCol: this.kmSel() === 'openrouter' ? '#97FCE4' : '#7C9A91',
-      kmDesc: (this.kmSel() === 'openai' ? 'Get a key at platform.openai.com → API keys.' : this.kmSel() === 'gemini' ? 'Get a key at aistudio.google.com → Get API key (free tier works).' : this.kmSel() === 'openrouter' ? 'Get a key at openrouter.ai → Keys. One key reaches Claude, GPT, Gemini, Llama and more.' : 'Create a key at console.anthropic.com → API Keys ($5 of credit lasts months at this usage).') + ' The key is stored only in THIS browser — never in the shared code.',
+      kmDesc: (this.kmSel() === 'openai' ? 'Get a key at platform.openai.com → API keys.' : this.kmSel() === 'gemini' ? 'Get a free key at aistudio.google.com → Get API key.' : this.kmSel() === 'openrouter' ? 'Get a key at openrouter.ai → Keys.' : 'Create a key at console.anthropic.com → API Keys.') + ' Key is stored locally in THIS browser only.',
       kmPh: this.kmSel() === 'openai' ? 'sk-…' : this.kmSel() === 'gemini' ? 'AIza…' : this.kmSel() === 'openrouter' ? 'sk-or-…' : 'sk-ant-…',
-      kmModelPh: 'model — default: ' + this.defModel(this.kmSel()),
+      kmModelPh: 'model identifier — default: ' + this.defModel(this.kmSel()),
       hoverX: hb ? hb.cx : 0, hoverVis: hb ? '' : 'display:none',
       hoverXPct: hb ? hb.cx / 10 : 0, tipVis: hb ? 'visible' : 'hidden', tipOp: hb ? 1 : 0,
       tipDisplay: hb ? 'block' : 'none', tipLeft, tipTop,

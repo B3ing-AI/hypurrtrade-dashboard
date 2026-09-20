@@ -1,3 +1,4 @@
+
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -1012,7 +1013,12 @@
 
       <!-- reasoning pane -->
       <div style="padding:24px 26px; display:flex; flex-direction:column; gap:14px;">
-        <span style="font-size:11px; font-weight:600; letter-spacing:.16em; color:#7C9A91;">WHY — LIVE FACTOR BREAKDOWN</span>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:11px; font-weight:600; letter-spacing:.16em; color:#7C9A91;">WHY — LIVE FACTOR BREAKDOWN</span>
+          <button sc-camel-on-click="{{ kmOpen }}" style="cursor:pointer; border:1px solid rgba(151,252,228,.25); background:rgba(151,252,228,.08); color:#97FCE4; padding:4px 10px; border-radius:7px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; display:inline-flex; align-items:center; gap:5px;" title="Configure AI API Key & Model">
+            <span>🤖</span> <span>{{ kmBadgeText }}</span>
+          </button>
+        </div>
         <div style="display:flex; flex-direction:column; gap:9px;">
           <sc-for list="{{ vFactors }}" as="f" hint-placeholder-count="5">
             <div sc-camel-on-click="{{ f.click }}" data-mq="frow" style="display:grid; grid-template-columns:190px 1fr 200px; gap:14px; align-items:center; cursor:{{ f.cur }};">
@@ -1998,29 +2004,85 @@
       </div>
     </sc-if>
 
-    <!-- ===== CLAUDE API KEY (for public deploys) ===== -->
+    <!-- ===== AI API KEY & MODEL SELECTOR MODAL ===== -->
     <sc-if value="{{ kmShow }}" hint-placeholder-val="{{ false }}">
-      <div sc-camel-on-click="{{ kmClose }}" style="position:fixed; inset:0; z-index:90; background:rgba(3,9,7,.72); backdrop-filter:blur(7px); display:flex; align-items:center; justify-content:center; padding:24px;">
-        <div sc-camel-on-click="{{ kmStop }}" style="width:430px; max-width:94vw; border-radius:20px; border:1px solid rgba(151,252,228,.16); background:linear-gradient(180deg, #101E1A, #0A1512); box-shadow:0 40px 90px -30px rgba(0,0,0,.95); padding:22px; font-family:'Space Grotesk',system-ui,sans-serif; color:#E9FBF5; display:flex; flex-direction:column; gap:14px;">
+      <div sc-camel-on-click="{{ kmClose }}" style="position:fixed; inset:0; z-index:90; background:rgba(3,9,7,.75); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:20px;">
+        <div sc-camel-on-click="{{ kmStop }}" style="width:480px; max-width:95vw; max-height:92vh; overflow-y:auto; border-radius:20px; border:1px solid rgba(151,252,228,.18); background:linear-gradient(180deg, #11201C, #091512); box-shadow:0 40px 90px -30px rgba(0,0,0,.95); padding:24px; font-family:'Space Grotesk',system-ui,sans-serif; color:#E9FBF5; display:flex; flex-direction:column; gap:14px;">
+          
           <div style="display:flex; align-items:center; justify-content:space-between;">
-            <span style="font-size:15px; font-weight:700;">AI API key — Liq-map reader</span>
-            <button sc-camel-on-click="{{ kmClose }}" style="cursor:pointer; border:0; background:rgba(255,255,255,.06); color:#9CB8AF; width:26px; height:26px; border-radius:8px; font-size:13px; line-height:1;">✕</button>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:16px; font-weight:700;">AI API Key — Liq-map Reader</span>
+            </div>
+            <button sc-camel-on-click="{{ kmClose }}" style="cursor:pointer; border:0; background:rgba(255,255,255,.07); color:#9CB8AF; width:28px; height:28px; border-radius:8px; font-size:14px; line-height:1; display:grid; place-items:center;">✕</button>
           </div>
-          <div style="display:flex; gap:2px; padding:2px; border-radius:10px; background:rgba(255,255,255,.05); border:1px solid rgba(151,252,228,.12);">
-            <button sc-camel-on-click="{{ kmSetA }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:9.5px; font-weight:600; letter-spacing:.03em; background:{{ kmABg }}; color:{{ kmACol }}; transition:background .2s ease, color .2s ease;">CLAUDE</button>
-            <button sc-camel-on-click="{{ kmSetO }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:9.5px; font-weight:600; letter-spacing:.03em; background:{{ kmOBg }}; color:{{ kmOCol }}; transition:background .2s ease, color .2s ease;">GPT</button>
-            <button sc-camel-on-click="{{ kmSetG }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:9.5px; font-weight:600; letter-spacing:.03em; background:{{ kmGBg }}; color:{{ kmGCol }}; transition:background .2s ease, color .2s ease;">GEMINI</button>
-            <button sc-camel-on-click="{{ kmSetR }}" style="flex:1.3; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:9.5px; font-weight:600; letter-spacing:.03em; background:{{ kmRBg }}; color:{{ kmRCol }}; transition:background .2s ease, color .2s ease;">OPENROUTER</button>
+
+          <!-- Provider Tabs -->
+          <div style="display:flex; gap:3px; padding:3px; border-radius:11px; background:rgba(255,255,255,.05); border:1px solid rgba(151,252,228,.12);">
+            <button sc-camel-on-click="{{ kmSetA }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; letter-spacing:.03em; background:{{ kmABg }}; color:{{ kmACol }}; transition:all .2s ease;">CLAUDE</button>
+            <button sc-camel-on-click="{{ kmSetO }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; letter-spacing:.03em; background:{{ kmOBg }}; color:{{ kmOCol }}; transition:all .2s ease;">GPT</button>
+            <button sc-camel-on-click="{{ kmSetG }}" style="flex:1; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; letter-spacing:.03em; background:{{ kmGBg }}; color:{{ kmGCol }}; transition:all .2s ease;">GEMINI</button>
+            <button sc-camel-on-click="{{ kmSetR }}" style="flex:1.2; cursor:pointer; border:0; padding:8px 4px; border-radius:8px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; letter-spacing:.03em; background:{{ kmRBg }}; color:{{ kmRCol }}; transition:all .2s ease;">OPENROUTER</button>
           </div>
-          <p style="margin:0; font-size:12.5px; line-height:1.55; color:#9CB8AF;">Powers the "Liq-map read (AI)" factor when this dashboard runs outside its home workspace. {{ kmDesc }}</p>
-          <input type="password" placeholder="{{ kmPh }}" sc-camel-on-input="{{ kmType }}" style="box-sizing:border-box; width:100%; padding:11px 13px; border-radius:10px; border:1px solid rgba(151,252,228,.2); background:rgba(0,0,0,.35); color:#E9FBF5; font-family:'JetBrains Mono'; font-size:12.5px; outline:none;">
-          <input type="text" placeholder="{{ kmModelPh }}" sc-camel-on-input="{{ kmModelType }}" style="box-sizing:border-box; width:100%; padding:9px 13px; border-radius:10px; border:1px solid rgba(151,252,228,.13); background:rgba(0,0,0,.3); color:#CFE9E1; font-family:'JetBrains Mono'; font-size:11px; outline:none;">
-          <div style="display:flex; gap:9px;">
-            <button sc-camel-on-click="{{ kmSave }}" style="flex:1; cursor:pointer; border:0; padding:11px; border-radius:10px; background:#97FCE4; color:#08130f; font-weight:700; font-size:13px; font-family:'Space Grotesk',system-ui,sans-serif;">Save &amp; test</button>
+
+          <p style="margin:0; font-size:12px; line-height:1.55; color:#9CB8AF;">{{ kmDesc }}</p>
+
+          <!-- API Key Input -->
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <label style="font-size:10px; font-weight:600; letter-spacing:.12em; color:#7C9A91; font-family:'JetBrains Mono';">API KEY</label>
+            <input type="password" value="{{ kmKeyVal }}" placeholder="{{ kmPh }}" sc-camel-on-input="{{ kmType }}" sc-camel-on-change="{{ kmType }}" style="box-sizing:border-box; width:100%; padding:11px 13px; border-radius:10px; border:1px solid rgba(151,252,228,.22); background:rgba(0,0,0,.45); color:#E9FBF5; font-family:'JetBrains Mono'; font-size:12.5px; outline:none;">
+          </div>
+
+          <!-- Model Dropdown & Selector -->
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <label style="font-size:10px; font-weight:600; letter-spacing:.12em; color:#7C9A91; font-family:'JetBrains Mono';">SELECT MODEL</label>
+              <span style="font-size:9.5px; color:#5f7a72; font-family:'JetBrains Mono';">Click dropdown or pills to change</span>
+            </div>
+
+            <!-- Custom Dropdown Trigger -->
+            <div style="position:relative; display:flex; flex-direction:column; gap:4px;">
+              <div sc-camel-on-click="{{ kmToggleDrop }}" style="cursor:pointer; width:100%; box-sizing:border-box; padding:10px 13px; border-radius:10px; border:1px solid rgba(151,252,228,.22); background:#0c1916; display:flex; justify-content:space-between; align-items:center; user-select:none;">
+                <span style="font-family:'JetBrains Mono'; font-size:12px; color:#97FCE4; font-weight:600;">{{ kmCurModelLabel }}</span>
+                <span style="color:#7C9A91; font-size:10px; transition:transform .2s ease;">▼</span>
+              </div>
+
+              <!-- Dropdown List of Models -->
+              <sc-if value="{{ kmDropOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; flex-direction:column; gap:3px; max-height:185px; overflow-y:auto; padding:6px; border-radius:10px; background:#07120f; border:1px solid rgba(151,252,228,.22); box-shadow:0 12px 30px rgba(0,0,0,.85);">
+                  <sc-for list="{{ kmModelPills }}" as="m">
+                    <div sc-camel-on-click="{{ m.pick }}" style="cursor:pointer; display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-radius:7px; background:{{ m.bg }}; color:{{ m.col }}; transition:all .15s ease;">
+                      <span style="font-family:'JetBrains Mono'; font-size:11.5px; font-weight:600;">{{ m.label }}</span>
+                      <span style="font-size:9.5px; opacity:.8; font-family:'JetBrains Mono'; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,.08);">{{ m.tag }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+
+            <!-- Quick-select pills -->
+            <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:2px;">
+              <sc-for list="{{ kmModelPills }}" as="m">
+                <button sc-camel-on-click="{{ m.pick }}" style="cursor:pointer; border:1px solid {{ m.border }}; padding:5px 9px; border-radius:7px; font-family:'JetBrains Mono'; font-size:10px; font-weight:600; background:{{ m.bg }}; color:{{ m.col }}; transition:all .15s ease;">{{ m.name }}</button>
+              </sc-for>
+            </div>
+
+            <!-- Custom Model Input Field -->
+            <input type="text" value="{{ kmModelVal }}" placeholder="{{ kmModelPh }}" sc-camel-on-input="{{ kmModelType }}" sc-camel-on-change="{{ kmModelType }}" title="Custom model identifier" style="box-sizing:border-box; width:100%; padding:9px 12px; border-radius:9px; border:1px solid rgba(151,252,228,.14); background:rgba(0,0,0,.35); color:#97FCE4; font-family:'JetBrains Mono'; font-size:11px; outline:none;">
+          </div>
+
+          <!-- Buttons -->
+          <div style="display:flex; gap:8px; margin-top:3px;">
+            <button sc-camel-on-click="{{ kmSave }}" style="flex:1; cursor:pointer; border:0; padding:11px; border-radius:10px; background:#97FCE4; color:#08130f; font-weight:700; font-size:13px; font-family:'Space Grotesk',system-ui,sans-serif; transition:background .15s ease;">Save &amp; test</button>
             <button sc-camel-on-click="{{ kmTest }}" style="cursor:pointer; border:1px solid rgba(151,252,228,.28); padding:11px 14px; border-radius:10px; background:transparent; color:#97FCE4; font-weight:600; font-size:12.5px; font-family:'Space Grotesk',system-ui,sans-serif;">Test</button>
             <button sc-camel-on-click="{{ kmRemove }}" style="cursor:pointer; border:1px solid rgba(255,107,122,.35); padding:11px 14px; border-radius:10px; background:transparent; color:#FF6B7A; font-weight:600; font-size:12.5px; font-family:'Space Grotesk',system-ui,sans-serif;">Remove</button>
           </div>
-          <span style="font-size:11px; color:{{ kmStatusCol }}; font-family:'JetBrains Mono';">{{ kmStatus }}</span>
+
+          <!-- Status Box -->
+          <div style="display:flex; align-items:center; gap:6px; padding:9px 12px; border-radius:9px; background:rgba(0,0,0,.3); border:1px solid rgba(255,255,255,.05);">
+            <span style="font-size:11.5px; color:{{ kmStatusCol }}; font-family:'JetBrains Mono'; line-height:1.4; word-break:break-word;">{{ kmStatus }}</span>
+          </div>
         </div>
       </div>
     </sc-if>
+
+    
