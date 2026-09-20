@@ -1,0 +1,12 @@
+# GitHub Linguist Overrides
+# Exclude standalone HTML bundles and raw export files from language statistics
+*.html linguist-detectable=false
+*.dc.html linguist-detectable=false
+raw_pages/** linguist-vendored
+assets/** linguist-vendored
+public/** linguist-vendored
+scratch_test_signals.js linguist-vendored
+
+# Ensure JavaScript and React JSX are the primary detected languages
+*.js linguist-detectable=true
+*.jsx linguist-detectable=true
