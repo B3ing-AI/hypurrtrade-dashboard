@@ -1,77 +1,95 @@
 # HypurrTrade Dashboard
 
-This project contains the complete extracted source code and standalone web applications from Lovable project:
-**`https://lovable.dev/projects/171d434e-bf7e-40e1-a3a8-5b8229cfaebf`**
-(Deployed at: `https://hypurrtrade.lovable.app/`)
+High-performance quantitative perpetual trading analytics, liquidation heatmap, and multi-coin momentum signal matrix powered by Hyperliquid and AI conviction models.
 
 ---
 
-## 🚀 Quick Start (Run Locally)
+## 🚀 Quick Start (Modern React + Vite)
 
-You can launch the project locally right now using Python or any local web server:
+Run the modern Vite SPA with instant Hot Module Replacement (HMR) and integrated AI proxy:
+
+```bash
+npm install
+npm run dev
+```
+
+The app will start at `http://localhost:3000/`:
+- **Landing Page**: `http://localhost:3000/`
+- **Prep Dashboard (Perps & Heatmap)**: `http://localhost:3000/prep-dashboard?coin=ZEC`
+- **Signal Dashboard (40-Coin Matrix)**: `http://localhost:3000/signal-dashboard`
+
+### 📦 Production Build
+
+To compile a production-ready, minified bundle with code-splitting:
+
+```bash
+npm run build
+```
+Build output is saved to the `dist/` directory ready for deployment to Vercel, Netlify, Cloudflare Pages, or AWS S3.
+
+To preview the production build locally:
+```bash
+npm run preview
+```
+
+---
+
+## 🛠 Standalone Offline Fallback
+
+The project also maintains standalone zero-dependency HTML files that can be run directly without Node.js:
 
 ```bash
 python serve.py
 ```
-* Or via npm / npx:
-```bash
-npm start
-# or
-npx serve .
-```
-
-This will automatically serve:
-- **Prep Dashboard (ZEC)**: `http://localhost:3000/prep-dashboard.html?coin=ZEC`
-- **Signal Dashboard**: `http://localhost:3000/signal-dashboard.html`
-- **Landing Page**: `http://localhost:3000/index.html`
-
-> **Note:** You can also simply double-click and open any of the `.html` files in your web browser.
+- Standalone Prep Dashboard: `http://localhost:3000/prep-dashboard.html?coin=ZEC`
+- Standalone Signal Dashboard: `http://localhost:3000/signal-dashboard.html`
+- Standalone Landing Page: `http://localhost:3000/landing-standalone.html`
 
 ---
 
-## 📁 Project Structure
+## 📁 Project Architecture
 
 ```
-├── index.html                   # Standalone Landing page
-├── prep-dashboard.html          # Standalone Prep Trading Dashboard (supports ?coin=ZEC, HYPE, SUI, etc.)
-├── signal-dashboard.html        # Standalone Multi-Coin Signal Matrix
-├── serve.py                     # Local development server with CORS & browser auto-launch
-├── package.json                 # Project configuration
+├── index.html                   # Modern Vite SPA root entry
+├── vite.config.js               # Vite config with React plugin & integrated AI Proxy dev middleware
+├── package.json                 # Modern dependencies & build scripts
+├── public/assets/               # Static fonts, SVGs, and vector assets served at /assets/
 │
-├── src/                         # Clean extracted source code files
-│   ├── PrepDashboardComponent.js    # 200KB trading engine (Hyperliquid WS, Liquidation Heatmap, PnL)
-│   ├── PrepDashboardTemplate.jsx   # Clean JSX view template for the Prep Dashboard
-│   ├── SignalDashboardComponent.js  # Signal scanner logic & indicator metrics
-│   ├── SignalDashboardTemplate.jsx # Clean JSX view template for the Signal Dashboard
-│   ├── LandingComponent.js         # Landing page component logic
-│   └── LandingTemplate.jsx         # Clean JSX view template for Landing
+├── src/
+│   ├── main.jsx                 # React 18 createRoot bootstrap
+│   ├── App.jsx                  # SPA Router (react-router-dom) with code-splitting & link interception
+│   ├── dc-adapter.jsx           # High-performance component bridge for modular templates
+│   ├── pages/
+│   │   ├── LandingPage.jsx      # Product showcase, interactive R:R curve, animated mascot
+│   │   ├── PrepDashboardPage.jsx# Live orderbook, trades tape, liquidation heatmap, manual cancel
+│   │   └── SignalDashboardPage.jsx # Multi-coin signal matrix & momentum indicators
+│   ├── components/
+│   │   └── SignalCard.jsx       # 3D interactive tilt card with donut ratio charts
+│   ├── PrepDashboardComponent.js # 200KB trading engine (Hyperliquid WS, Liquidation math, PnL)
+│   ├── PrepDashboardTemplate.jsx# JSX view template for the Prep Dashboard
+│   ├── SignalDashboardComponent.js # Signal scanner logic & indicator metrics
+│   ├── SignalDashboardTemplate.jsx # JSX view template for the Signal Dashboard
+│   ├── LandingComponent.js      # Landing page component logic
+│   └── LandingTemplate.jsx      # JSX view template for Landing
 │
-├── assets/                      # Offline fonts, scripts, and vector assets
-│   ├── dc-runtime.js            # Component lifecycle & mounting runtime
-│   ├── react.min.js             # React 18.3.1
-│   ├── react-dom.min.js         # ReactDOM 18.3.1
-│   ├── babel.min.js             # Babel Standalone compiler (100% offline support)
-│   ├── font_*.woff2             # Bundled typography (JetBrains Mono, CameraPlainVariable, etc.)
-│   └── icon_*.svg               # UI icons & coin logos
-│
-└── raw_pages/                   # Original raw bundled files downloaded directly from Lovable
-    ├── Landing.dc.html
-    ├── Prep dashboard.dc.html
-    └── Signal Dashboard.dc.html
+└── legacy/
+    ├── prep-dashboard.html      # Standalone fallback
+    ├── signal-dashboard.html    # Standalone fallback
+    └── landing-standalone.html  # Standalone fallback
 ```
 
 ---
 
-## ⚡ Core Features & Component Architecture
+## ⚡ Core Features
 
-1. **Prep Dashboard (`src/PrepDashboardComponent.js` & `prep-dashboard.html`)**:
-   - **Hyperliquid Integration**: Live orderbook, trades tape, and meta leverage tiers directly from Hyperliquid.
-   - **Liquidation Heatmap (`makeHeat`, `rebuildHeat`, `shape`)**: Real liquidation levels computed from position entries and leverage multipliers.
-   - **Multi-Coin Support (`?coin=<SYMBOL>`)**: Supports `ZEC`, `HYPE`, `SUI`, `ETH`, `NEAR`, `HBAR`, `BTC`, `SOL`, and every Hyperliquid perp.
-   - **Trade Management & Analytics**: Open/Closed trades table, PnL calculations, net cost mode, and risk-reward ratios.
+1. **Prep Dashboard (`/prep-dashboard`)**:
+   - **Hyperliquid WebSocket**: Direct streaming connection for order book, trades tape, and prices.
+   - **Liquidation Heatmap**: Real liquidation density calculations plotted dynamically across leverage tiers.
+   - **Live Paper Trading & Manual Cancellation**: Real-time position tracking with custom risk parameters and one-click manual trade cancellation (`✕ CANCEL`).
+   - **AI Conviction Engine**: Integrated multi-model analysis (Gemini 3.8 Flash, Anthropic Claude, OpenAI, DeepSeek, Groq) via local proxy.
 
-2. **Signal Dashboard (`src/SignalDashboardComponent.js` & `signal-dashboard.html`)**:
-   - Multi-asset scoring engine scanning momentum, volume anomalies, funding shifts, and trend signals across perpetuals.
+2. **Signal Dashboard (`/signal-dashboard`)**:
+   - 40-asset scoring engine scanning momentum, volume anomalies, funding shifts, and trend signals across perpetuals.
 
-3. **Landing Page (`src/LandingComponent.js` & `index.html`)**:
-   - Product showcase, hero section, and direct routes into the trading and signal dashboards.
+3. **Interactive Mascot (Hypurr)**:
+   - Coordinated vector animations with natural breathing, double blinking, ear twitches, spectacles glare reflection, and purr reactions on click.
