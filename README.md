@@ -1,5 +1,10 @@
 # HypurrTrade Dashboard
 
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Hyperliquid](https://img.shields.io/badge/Hyperliquid-API-97FCE4?style=for-the-badge&logo=bitcoin&logoColor=black)](https://hyperliquid.xyz)
+
 High-performance quantitative perpetual trading analytics, liquidation heatmap, and multi-coin momentum signal matrix powered by Hyperliquid and AI conviction models.
 
 ---
